@@ -1,0 +1,23 @@
+@use "tokens" as t;
+
+.wrapper {
+    position: relative;
+
+    .spinner {
+        position: absolute;
+        background-color: white;
+        border-radius: 50px;
+        right: 0;
+        top: 4px;
+    }
+
+    select.filter-select {
+        width: 115px;
+        @include t.filter-item-style;
+
+        option {
+            width: 120px;
+            overflow: hidden;
+        }
+    }
+}

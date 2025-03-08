@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="header">
+    <app-header></app-header>
+  </div>
+  <section class="wrapper" id="main" [ngClass]="{ 'editor-open': editorOpen }">
+    <div class="search-section">
+      <div class="search">
+        <app-search></app-search>
+      </div>
+      <div class="results">
+        <app-result-list></app-result-list>
+      </div>
+    </div>
+
+    <div class="editor">
+      @if (editorOpen) {
+        <app-editor></app-editor>
+      }
+    </div>
+  </section>
+  <div class="footer">
+    <app-footer></app-footer>
+  </div>
+</div>

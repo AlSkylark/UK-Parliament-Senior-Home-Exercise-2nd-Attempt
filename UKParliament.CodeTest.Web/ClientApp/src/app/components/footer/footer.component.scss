@@ -1,0 +1,21 @@
+@use "colours" as c;
+
+@import "bs-breakpoints";
+
+.footer {
+    font-size: small;
+    text-align: center;
+    color: c.$colour-white;
+    background-color: c.$colour-purple;
+    padding: 10px;
+
+    .text {
+        display: none;
+    }
+
+    @include media-breakpoint-up(sm) {
+        .text {
+            display: block;
+        }
+    }
+}

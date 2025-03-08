@@ -1,0 +1,71 @@
+<div class="container">
+  <form (submit)="$event.preventDefault(); search()">
+    <div class="search" [ngClass]="{ 'editor-open': editorIsOpen }">
+      <div class="input">
+        <app-textbox
+          [id]="'search'"
+          [(value)]="filters.textSearch"
+          (valueChange)="searchRequestUpdated()"
+          [label]="'Search'"
+          [showLabel]="false"
+          [placeholder]="'Type here to search by first name or last name...'"
+        ></app-textbox>
+
+        <app-button
+          class="search-button"
+          type="button"
+          (click)="search()"
+          [ariaLabel]="editorIsOpen ? 'Search' : ''"
+        >
+          <i class="bx bx-search"></i>
+          <span class="search-button-text">Search</span></app-button
+        >
+      </div>
+
+      <button
+        type="button"
+        class="filter-button"
+        (click)="toggleFilters()"
+        [ariaExpanded]="showFilters"
+      >
+        <span>filters</span>
+        @if (showFilters) {
+          <i class="bx bx-chevron-up"></i>
+        } @else {
+          <i class="bx bx-chevron-down"></i>
+        }
+      </button>
+    </div>
+
+    <div
+      class="filters"
+      [ngClass]="{ hidden: !showFilters, 'editor-open': editorIsOpen }"
+    >
+      <app-filter-select
+        [text]="'department'"
+        [id]="'department-filter'"
+        [itemToLook]="lookupItems.Department"
+        [(value)]="filters.department"
+        (valueChange)="searchRequestUpdated()"
+      />
+      <app-filter-select
+        [text]="'pay band'"
+        [id]="'payband-filter'"
+        [itemToLook]="lookupItems.PayBand"
+        [(value)]="filters.payBand"
+        (valueChange)="searchRequestUpdated()"
+      />
+      <app-filter-select
+        [text]="'type'"
+        [id]="'type-filter'"
+        [itemToLook]="lookupItems.EmployeeType"
+        [(value)]="filters.employeeType"
+        (valueChange)="searchRequestUpdated()"
+      />
+      <button class="reset-button" type="reset" (click)="resetFilter()">
+        <i class="bx bx-redo"></i>
+        <span>reset</span>
+      </button>
+    </div>
+  </form>
+</div>

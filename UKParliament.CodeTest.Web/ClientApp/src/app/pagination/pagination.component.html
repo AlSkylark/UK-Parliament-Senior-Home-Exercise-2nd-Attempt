@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="prev">
+    <app-button
+      type="button"
+      [disabled]="pagination?.currentPage === 1"
+      (click)="goPrev()"
+    >
+      <i class="bx bxs-left-arrow"></i>
+      Previous
+    </app-button>
+  </div>
+
+  <div class="selector">
+    <select
+      aria-label="Page selector"
+      name="page-selector"
+      id="page-selector"
+      [(ngModel)]="currentFilters.page"
+      (change)="goTo()"
+    >
+      @for (item of createRange(pagination?.finalPage ?? 1); track $index) {
+        <option [value]="item">{{ item }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="next">
+    <app-button
+      type="button"
+      [disabled]="pagination?.currentPage === pagination?.finalPage"
+      (click)="goNext()"
+    >
+      Next
+      <i class="bx bxs-right-arrow"></i>
+    </app-button>
+  </div>
+</div>

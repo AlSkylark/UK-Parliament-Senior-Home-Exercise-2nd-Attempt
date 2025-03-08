@@ -1,26 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UKParliament.CodeTest.Data.Models;
 
 namespace UKParliament.CodeTest.Data;
 
-public class PersonManagerContext : DbContext
+public class PersonManagerContext(DbContextOptions<PersonManagerContext> options)
+    : DbContext(options)
 {
-    public PersonManagerContext(DbContextOptions<PersonManagerContext> options) : base(options)
-    {
-
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder
+            .Entity<Employee>()
+            .HasDiscriminator<EmployeeTypeEnum>("EmployeeType")
+            .HasValue<Employee>(EmployeeTypeEnum.Employee)
+            .HasValue<Manager>(EmployeeTypeEnum.Manager);
 
-        modelBuilder.Entity<Department>().HasData(
-            new Department { Id = 1, Name = "Sales" },
-            new Department { Id = 2, Name = "Marketing" },
-            new Department { Id = 3, Name = "Finance" },
-            new Department { Id = 4, Name = "HR" });
+        modelBuilder
+            .Entity<Employee>()
+            .HasOne(e => e.Manager)
+            .WithMany(m => m.Employees)
+            .HasForeignKey(e => e.ManagerId);
+
+        base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<Person> People { get; set; }
-
-    public DbSet<Department> Departments { get; set; }
+    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Manager> Managers { get; set; } = null!;
+    public DbSet<PayBand> PayBands { get; set; } = null!;
+    public DbSet<Address> Addresses { get; set; } = null!;
+    public DbSet<Department> Departments { get; set; } = null!;
 }

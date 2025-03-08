@@ -1,0 +1,30 @@
+<div class="container">
+  @if (employeeCollection?.results?.length === 0) {
+    <div class="content">
+      <div class="not-found">
+        No employees were found, please refine your search.
+      </div>
+    </div>
+  } @else {
+    <div class="pagination">
+      <app-pagination
+        [pagination]="employeeCollection?.pagination"
+      ></app-pagination>
+    </div>
+    <div class="content" [ngClass]="{ 'editor-open': editorIsOpen }">
+      @for (item of employeeCollection?.results; track $index) {
+        <app-card
+          [employee]="item"
+          [selected]="
+            !!(selectedEmployee && selectedEmployee.data.id === item.data.id)
+          "
+        ></app-card>
+      }
+    </div>
+    <div class="pagination">
+      <app-pagination
+        [pagination]="employeeCollection?.pagination"
+      ></app-pagination>
+    </div>
+  }
+</div>

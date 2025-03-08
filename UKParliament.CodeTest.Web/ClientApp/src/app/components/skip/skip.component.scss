@@ -1,0 +1,27 @@
+@use "tokens" as t;
+@use "colours" as c;
+
+.skip {
+    position: absolute;
+    z-index: 999;
+    left: -999px;
+    top: auto;
+    overflow: hidden;
+
+    border: t.$input-border-style;
+    padding: t.$input-padding-style;
+    background-color: c.$colour-white;
+    color: c.$colour-black;
+    text-decoration: none;
+    font-size: 1.4rem;
+
+    &:focus {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: auto;
+        height: auto;
+
+        @include t.focus-style;
+    }
+}

@@ -1,0 +1,20 @@
+<div class="wrapper">
+  @if (loading) {
+    <i class="bx bx-loader-circle bx-spin spinner"></i>
+  }
+  <select
+    name="{{ id }}"
+    id="{{ id }}"
+    [attr.aria-label]="text"
+    class="filter-select"
+    (click)="getLookupItems()"
+    [(ngModel)]="value"
+    (change)="updateValue()"
+  >
+    <option value="">{{ text }}</option>
+
+    @for (item of itemList; track $index) {
+      <option [value]="item.name">{{ item.name }}</option>
+    }
+  </select>
+</div>

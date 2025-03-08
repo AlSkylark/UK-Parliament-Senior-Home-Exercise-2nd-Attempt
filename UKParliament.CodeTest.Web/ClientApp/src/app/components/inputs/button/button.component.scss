@@ -1,0 +1,6 @@
+@use "tokens" as t;
+@use "colours" as c;
+
+.button {
+    @include t.button-style;
+}

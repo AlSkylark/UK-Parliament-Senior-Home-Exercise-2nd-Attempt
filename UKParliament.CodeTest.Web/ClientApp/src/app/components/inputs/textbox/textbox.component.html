@@ -1,0 +1,26 @@
+<div class="wrapper">
+  @if (showLabel) {
+    <label [ngClass]="{ 'has-errors': !isValid }" for="{{ id }}">{{
+      label
+    }}</label>
+  }
+  <input
+    class="input"
+    [ngClass]="{ 'has-errors': !isValid }"
+    type="text"
+    [attr.name]="id"
+    [attr.aria-label]="showLabel ? null : label"
+    id="{{ id }}"
+    [ngModel]="value"
+    (input)="onInput($event)"
+    autocapitalize="off"
+    [placeholder]="placeholder"
+    [autocomplete]="autopopulate.length > 0 ? autopopulate : 'off'"
+    [disabled]="disabled"
+  />
+  <div class="validation-messages">
+    @for (message of validationMessages; track $index) {
+      <div class="validation-message">{{ message }}</div>
+    }
+  </div>
+</div>

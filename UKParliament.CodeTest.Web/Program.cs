@@ -1,6 +1,10 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using CommissionMe.API.Infrastructure.Database;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using UKParliament.CodeTest.Data;
-using UKParliament.CodeTest.Services;
 
 namespace UKParliament.CodeTest.Web;
 
@@ -9,22 +13,51 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
         // Add services to the container.
 
         builder.Services.AddControllersWithViews();
 
-        builder.Services.AddDbContext<PersonManagerContext>(op => op.UseInMemoryDatabase("PersonManager"));
+        builder.Services.AddSingleton<CreatedUpdatedInterceptor>();
+        builder.Services.AddDbContext<PersonManagerContext>(
+            (services, options) =>
+                options
+                    .UseInMemoryDatabase("PersonManager")
+                    .AddInterceptors(services.GetRequiredService<CreatedUpdatedInterceptor>())
+        );
+        builder.Services.Configure<ApiConfiguration>(
+            builder.Configuration.GetSection(ApiConfiguration.Section)
+        );
 
-        builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+        {
+            var execAssembly = typeof(Program).Assembly;
+            var assemblies = execAssembly
+                .GetReferencedAssemblies()
+                .Where(a => a.Name?.StartsWith("UKParliament.CodeTest") ?? false)
+                .Select(Assembly.Load)
+                .ToList();
+
+            assemblies.Add(execAssembly);
+
+            containerBuilder
+                .RegisterAssemblyTypes([.. assemblies])
+                .Where(t => t.GetConstructors().Any(c => c.IsPublic))
+                .AsImplementedInterfaces();
+        });
 
         var app = builder.Build();
 
         // Create database so the data seeds
-        using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+        using (
+            var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope()
+        )
         {
-            using var context = serviceScope.ServiceProvider.GetRequiredService<PersonManagerContext>();
+            using var context =
+                serviceScope.ServiceProvider.GetRequiredService<PersonManagerContext>();
             context.Database.EnsureCreated();
+            context.SeedDatabase();
         }
 
         // Configure the HTTP request pipeline.
@@ -37,9 +70,7 @@ public class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller}/{action=Index}/{id?}");
+        app.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
 
         app.MapFallbackToFile("index.html");
 

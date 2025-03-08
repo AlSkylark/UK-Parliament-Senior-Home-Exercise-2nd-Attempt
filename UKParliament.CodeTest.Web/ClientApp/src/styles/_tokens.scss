@@ -1,0 +1,121 @@
+@use "colours" as c;
+
+$font-size-big: 1.1rem;
+$font-size-bigger: 1.2rem;
+
+$limiter-border-style: 2px solid c.$colour-purple;
+$limiter-border-style-slim: 1px solid c.$colour-purple;
+
+$input-border-style: 2px solid c.$colour-purple;
+$input-border-style-lighter: 1px solid c.$colour-purple-lighter;
+$input-padding-style: 1rem;
+
+$focus-border-style: 2px solid c.$colour-purple;
+$focus-box-shadow-style:
+  0 0 0 2px c.$colour-white,
+  0 0 0 5px c.$colour-purple;
+$focus-box-shadow-style-triple:
+  0 0 0 2px c.$colour-purple,
+  0 0 0 4px c.$colour-white,
+  0 0 0 6px c.$colour-purple;
+
+$focus-box-shadow-style-error:
+  0 0 0 2px c.$colour-white,
+  0 0 0 5px c.$colour-error-dark;
+
+$decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
+
+@mixin focus-style($emphasis: false) {
+  outline: 2px transparent;
+  border-radius: 0;
+  @if ($emphasis) {
+    box-shadow: $focus-box-shadow-style-triple;
+  } @else {
+    box-shadow: $focus-box-shadow-style;
+
+    &.has-errors {
+      box-shadow: $focus-box-shadow-style-error;
+    }
+  }
+}
+
+@mixin input-style {
+  padding: 10px;
+  border: $input-border-style;
+  border-radius: 0;
+  height: 100%;
+  max-height: 46px;
+  font-size: medium;
+  font-size: $font-size-big;
+
+  @include error-style;
+
+  &:focus {
+    @include focus-style;
+  }
+}
+
+@mixin error-style {
+  &.has-errors,
+  .has-errors {
+    border: 2px solid c.$colour-error-dark;
+  }
+}
+
+@mixin error-style-text {
+  &.has-errors,
+  .has-errors {
+    color: c.$colour-error-dark;
+  }
+}
+
+@mixin button-style {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  max-height: 46px;
+  width: 100%;
+  height: 100%;
+  font-size: $font-size-big;
+  padding: 10px;
+  cursor: pointer;
+  border: $input-border-style;
+  color: c.$colour-white;
+  background-color: c.$colour-purple;
+
+  &:disabled {
+    background-color: c.$colour-grey-2;
+    border-color: c.$colour-grey-1;
+    color: c.$colour-grey-3;
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: c.$colour-purple-lighter;
+  }
+
+  &:active:not(:disabled) {
+    background-color: c.$colour-purple-darker;
+  }
+
+  &:focus:not(:disabled) {
+    @include focus-style;
+  }
+}
+
+@mixin filter-item-style {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  font-size: $font-size-big;
+  border-bottom: 2px solid transparent;
+
+  &:focus {
+    @include focus-style(true);
+  }
+
+  &:hover {
+    border-bottom: $input-border-style;
+  }
+}
