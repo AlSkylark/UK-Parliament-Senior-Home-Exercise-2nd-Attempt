@@ -1,15 +1,13 @@
 @use "tokens" as t;
 
 .wrapper {
-  height: 100%;
+    label {
+        @include t.error-style-text;
+    }
 
-  label {
-    @include t.error-style-text;
-  }
-
-  .input {
-    height: 100%;
-    width: 100%;
-    @include t.input-style;
-  }
+    .input {
+        height: 100%;
+        width: 100%;
+        @include t.input-style;
+    }
 }

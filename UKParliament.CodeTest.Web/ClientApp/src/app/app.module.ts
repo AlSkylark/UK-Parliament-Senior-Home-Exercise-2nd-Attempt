@@ -5,8 +5,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SkipComponent } from "./components/skip/skip.component";
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
     declarations: [
@@ -18,8 +18,7 @@ import { SkipComponent } from "./components/skip/skip.component";
         SkipComponent,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: DashboardComponent, pathMatch: 'full' }
+            { path: '', component: MainComponent, pathMatch: 'full' }
         ], { anchorScrolling: "enabled" }),
         SkipComponent
     ],
