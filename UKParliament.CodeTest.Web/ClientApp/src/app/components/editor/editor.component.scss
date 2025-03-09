@@ -6,125 +6,128 @@
 $field-gaps: 1rem;
 
 .container {
-  padding: 10px;
+    padding: 10px;
 
-  button {
-    @include t.button-style;
-  }
-
-  h1 {
-    font-size: 3rem;
-  }
-  h2 {
-    font-size: 2rem;
-  }
-
-  .top-section {
-    display: flex;
-    flex-wrap: wrap-reverse;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-
-    .action-buttons {
-      display: flex;
-      gap: $field-gaps;
+    button {
+        @include t.button-style;
     }
-  }
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
 
-    .profile-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $field-gaps;
-
-      .other-details {
-        flex: 0;
+    .top-section {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap-reverse;
+        gap: 10px;
+        justify-content: center;
         align-items: center;
-        gap: $field-gaps;
-        min-width: 240px;
+        margin-bottom: 2rem;
 
-        .avatar {
-          width: 150px;
-          height: 150px;
-          img {
-            width: 100%;
-            height: 100%;
-          }
+        .action-buttons {
+            display: flex;
+            gap: $field-gaps;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+        h2 {
+            font-size: 2rem;
         }
 
         .updated {
-          font-size: small;
+            font-size: small;
         }
-      }
-      .details {
-        flex: 1;
+    }
+    .form {
         display: flex;
         flex-direction: column;
-        gap: $field-gaps;
-      }
+        gap: 2rem;
+
+        .profile-section {
+            display: flex;
+            gap: $field-gaps;
+
+            .other-details {
+                flex: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: $field-gaps;
+
+                .avatar {
+                    width: 150px;
+                    height: 150px;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .id {
+                    color: c.$colour-grey-2;
+                }
+            }
+            .details {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: $field-gaps;
+            }
+        }
+
+        .postcode-combi {
+            display: flex;
+            gap: $field-gaps;
+
+            .postcode-el {
+                flex: 0;
+                min-width: 150px;
+            }
+            .county-el {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+
+        .employment-dates {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: end;
+            gap: $field-gaps;
+
+            > * {
+                flex: 1;
+            }
+        }
+
+        .payment-section {
+            display: flex;
+            gap: $field-gaps;
+
+            .payband-el {
+                flex: 0;
+                min-width: 150px;
+            }
+            .salary-el {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+
+        .bottom-section {
+            margin-top: $field-gaps;
+            align-self: center;
+            .submit {
+                display: flex;
+                gap: $field-gaps;
+            }
+        }
     }
-
-    .postcode-combi {
-      display: flex;
-      gap: $field-gaps;
-
-      .postcode-el {
-        flex: 0;
-        min-width: 150px;
-      }
-      .county-el {
-        flex: 1;
-        min-width: 150px;
-      }
-    }
-
-    .employment-dates {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $field-gaps;
-
-      > * {
-        flex: 1;
-      }
-    }
-
-    .payment-section {
-      display: flex;
-      gap: $field-gaps;
-
-      .payband-el {
-        flex: 0;
-        min-width: 150px;
-      }
-      .salary-el {
-        flex: 1;
-        min-width: 150px;
-      }
-    }
-
-    .bottom-section {
-      margin-top: $field-gaps;
-      align-self: center;
-      .submit {
-        display: flex;
-        gap: $field-gaps;
-      }
-    }
-  }
 }
 
 @include media-breakpoint-up(md) {
-  .container {
-    padding: 2rem;
-    .top-section {
-      justify-content: space-between;
+    .container {
+        padding: 2rem;
+        .top-section {
+            justify-content: space-between;
+        }
     }
-  }
 }

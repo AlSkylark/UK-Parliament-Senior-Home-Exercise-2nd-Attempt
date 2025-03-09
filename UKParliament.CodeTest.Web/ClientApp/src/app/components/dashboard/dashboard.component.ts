@@ -1,11 +1,20 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { HeaderComponent } from "../header/header.component";
 import { SearchComponent } from "../search/search.component";
 import { FooterComponent } from "../footer/footer.component";
 import { EditorComponent } from "../editor/editor.component";
 import { ResultListComponent } from "../result-list/result-list.component";
 import { CommonModule } from '@angular/common';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { EditorService } from 'src/app/services/editor.service';
+import { Subscription } from 'rxjs';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,10 +23,17 @@ import { EmployeeService } from 'src/app/services/employee.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
   editorOpen = false;
 
-  constructor(private employeeService: EmployeeService) {
-    this.employeeService.employeeSubject.subscribe(e => this.editorOpen = (e !== null))
+  editorSubscription: Subscription;
+  constructor(private editorService: EditorService) {
+    this.editorSubscription = this.editorService.$editorOpen.subscribe(val => this.editorOpen = val);
   }
+
+  ngOnDestroy(): void {
+    this.editorSubscription.unsubscribe();
+  }
+
+
 }

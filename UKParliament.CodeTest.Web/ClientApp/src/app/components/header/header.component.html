@@ -1,11 +1,17 @@
 <header class="wrapper">
-  <div class="main">
-    <img class="logo" src="/assets/logo.svg" alt="UK Parliament logo" />
-    <div class="item">
-      <app-navigation></app-navigation>
+    <div class="main">
+        <a href="https://www.parliament.uk/" target="_blank">
+            <img class="logo" src="/assets/logo.svg" alt="UK Parliament logo" />
+        </a>
+        <div class="item">
+            <app-navigation></app-navigation>
+        </div>
     </div>
-  </div>
-  <div class="title">
-    <h1>UK Parliament - HR Management System</h1>
-  </div>
+
+    <div class="title">
+        <button type="button" (click)="toMainPage()">
+            <i class="bx bxs-user-badge"></i>
+            <h1>HR Management System</h1>
+        </button>
+    </div>
 </header>

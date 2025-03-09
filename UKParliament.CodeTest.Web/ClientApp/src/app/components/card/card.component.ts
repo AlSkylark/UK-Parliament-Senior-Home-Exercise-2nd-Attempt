@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { EmployeeViewModel } from 'src/app/models/employee-view-model';
 import { Resource } from 'src/app/models/resource';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ButtonComponent } from "../inputs/button/button.component";
+import { EditorService } from 'src/app/services/editor.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -12,7 +14,7 @@ import { ButtonComponent } from "../inputs/button/button.component";
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })
-export class CardComponent {
+export class CardComponent implements OnDestroy {
   @Input({ required: true })
   employee!: Resource<EmployeeViewModel>;
 
@@ -20,8 +22,14 @@ export class CardComponent {
   selected = false;
 
   editorIsOpen = false;
-  constructor(private employeeService: EmployeeService) {
-    this.employeeService.employeeSubject.subscribe(e => this.editorIsOpen = !!e);
+
+  editorSubscription: Subscription;
+  constructor(private employeeService: EmployeeService, private editorService: EditorService) {
+    this.editorSubscription = this.editorService.$editorOpen.subscribe(val => this.editorIsOpen = val);
+  }
+
+  ngOnDestroy(): void {
+    this.editorSubscription.unsubscribe();
   }
 
   openEmployeeProfile() {
@@ -36,7 +44,7 @@ export class CardComponent {
   openProfile(type: string) {
     const link = this.employee.links.find(l => l.rel === type)?.href;
     if (link) {
-      this.employeeService.selectEmployee(link);
+      this.employeeService.selectEmployee(link, () => this.editorService.openEditor());
     }
   }
 }

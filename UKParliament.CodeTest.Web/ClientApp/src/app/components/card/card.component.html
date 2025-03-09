@@ -1,63 +1,75 @@
 <div class="container" [ngClass]="{ selected: selected }">
-  <div class="avatar">
-    <div class="outer-border" [ngClass]="{ manager: employee.data.isManager }">
-      <div class="inner-border">
-        <img
-          [src]="
-            'https://avatar.iran.liara.run/username?username=' +
-            employee.data.firstName +
-            '+' +
-            employee.data.lastName
-          "
-          alt="Random avatar"
-        />
-      </div>
-    </div>
-  </div>
-  <div class="info">
-    <div class="name">
-      {{ employee.data.lastName }},
-      <span class="first-name">{{ employee.data.firstName }}</span>
-      @if (employee.data.hasManager && !editorIsOpen) {
-        <div class="manager">
-          Manager:
-          <a href="#" (click)="openManagerProfile($event)">
-            {{ employee.data.manager.firstName }}
-            {{ employee.data.manager.lastName?.substring(1, 2)?.toUpperCase() }}
-            <span class="sr-only"
-              >manager of {{ employee.data.firstName }}
-              {{ employee.data.lastName }}</span
-            >
-          </a>
+    <div class="avatar">
+        <div
+            class="outer-border"
+            [ngClass]="{ manager: employee.data.isManager }"
+        >
+            <div class="inner-border">
+                <img
+                    [src]="
+                        'https://avatar.iran.liara.run/username?username=' +
+                        employee.data.firstName +
+                        '+' +
+                        employee.data.lastName
+                    "
+                    alt="Random avatar"
+                />
+            </div>
         </div>
-      }
     </div>
-    <div class="department">
-      <span>{{ employee.data.department }}, {{ employee.data.payBand }}</span>
+    <div class="info">
+        <div class="name">
+            {{ employee.data.lastName }},
+            <span class="first-name">{{ employee.data.firstName }}</span>
+            @if (employee.data.hasManager && !editorIsOpen) {
+                <div class="manager">
+                    Manager:
+                    <a href="#" (click)="openManagerProfile($event)">
+                        {{ employee.data.manager.firstName }}
+                        {{
+                            employee.data.manager.lastName
+                                ?.substring(1, 2)
+                                ?.toUpperCase()
+                        }}
+                        <span class="sr-only"
+                            >manager of {{ employee.data.firstName }}
+                            {{ employee.data.lastName }}</span
+                        >
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="department">
+            <span
+                >{{ employee.data.department }},
+                {{ employee.data.payBand }}</span
+            >
+        </div>
     </div>
-  </div>
-  <div class="profile">
-    <app-button (click)="openEmployeeProfile()" type="button">
-      View profile
-      <span class="sr-only">
-        of {{ employee.data.firstName }} {{ employee.data.lastName }}</span
-      >
-    </app-button>
-  </div>
-  <div
-    class="status"
-    [ngClass]="{
-      manager: employee.data.isManager,
-      irregular: employee.data.hasIrregularities,
-      inactive: employee.data.inactive,
-    }"
-  >
-    @if (employee.data.isManager) {
-      <i class="bx bx-info-circle"></i>
-    }
+    <div class="profile">
+        <app-button (click)="openEmployeeProfile()" type="button">
+            <i class="bx bxs-user-detail"></i>
+            View profile
+            <span class="sr-only">
+                of {{ employee.data.firstName }}
+                {{ employee.data.lastName }}</span
+            >
+        </app-button>
+    </div>
+    <div
+        class="status"
+        [ngClass]="{
+            manager: employee.data.isManager,
+            irregular: employee.data.hasIrregularities,
+            inactive: employee.data.inactive,
+        }"
+    >
+        @if (employee.data.isManager) {
+            <i class="bx bx-info-circle"></i>
+        }
 
-    @if (employee.data.inactive || employee.data.hasIrregularities) {
-      <i class="bx bx-error"></i>
-    }
-  </div>
+        @if (employee.data.inactive || employee.data.hasIrregularities) {
+            <i class="bx bx-error"></i>
+        }
+    </div>
 </div>

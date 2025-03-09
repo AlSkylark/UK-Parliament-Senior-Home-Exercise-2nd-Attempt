@@ -9,22 +9,22 @@ import { ErrorBag } from '../models/errors/error-bag';
 export class ErrorService {
   constructor() { }
 
-  currentErrors: ValidationError[] = [];
-  errorsSubject = new Subject<ValidationError[]>();
+  errors: ValidationError[] = [];
+  $errors = new Subject<ValidationError[]>();
 
   public displayErrors(errorBag: ErrorBag | null) {
     if (errorBag) {
-      this.currentErrors = errorBag.errors;
-      this.errorsSubject.next(errorBag.errors);
+      this.errors = errorBag.errors;
+      this.$errors.next(errorBag.errors);
       return;
     }
 
-    this.errorsSubject.next([]);
+    this.$errors.next([]);
   }
 
   public resetErrors() {
-    if (this.currentErrors.length > 0) {
-      this.errorsSubject.next([]);
+    if (this.errors.length > 0) {
+      this.$errors.next([]);
     }
   }
 

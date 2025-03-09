@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormSectionComponent } from "../inputs/form-section/form-section.component";
 import { EmployeeService } from 'src/app/services/employee.service';
 import { TextboxComponent } from "../inputs/textbox/textbox.component";
@@ -13,8 +13,9 @@ import { NumberComponent } from "../inputs/number/number.component";
 import { CardComponent } from "../card/card.component";
 import { Link } from 'src/app/models/link';
 import { ErrorService } from 'src/app/services/error.service';
-import { ValidationError } from 'src/app/models/errors/validation-error';
 import { Subscription } from 'rxjs';
+import { EditorService } from 'src/app/services/editor.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-editor',
@@ -24,35 +25,59 @@ import { Subscription } from 'rxjs';
   styleUrl: './editor.component.scss'
 })
 export class EditorComponent implements OnDestroy {
-
-  selectedEmployee: Resource<EmployeeViewModel> | null = null;
+  selectedEmployee!: Resource<EmployeeViewModel>;
   manager: Resource<EmployeeViewModel> | null = null;
 
   nonReactiveName?: string | null = null;
   link?: Link | null = null;
 
+  hasErrors = false;
+
   createModeEnabled = false;
-  subscriber: Subscription;
 
-  constructor(private employeeService: EmployeeService, private errorService: ErrorService) {
-    this.subscriber = this.employeeService.employeeSubject.subscribe(employee => {
-      this.createModeEnabled = false;
-      if (!employee?.data.id) {
-        this.createModeEnabled = true;
-      }
+  employeeSubscription: Subscription;
+  errorsSubscription: Subscription;
 
-      if (this.selectedEmployee?.data.id !== employee?.data.id) {
+  constructor(
+    private editorService: EditorService,
+    private employeeService: EmployeeService,
+    private errorService: ErrorService) {
+
+    this.setNewEmployee();
+
+    this.employeeSubscription = this.employeeService.$activeEmployee.subscribe(employee => {
+      if (!employee) {
+        this.setNewEmployee();
         this.resetInitialVars();
+        return;
       }
 
+      this.createModeEnabled = !employee?.data.id;
       this.selectedEmployee = employee;
 
       this.loadInitialVars();
+      this.loadManager();
       this.errorService.resetErrors();
     });
+
+    this.errorsSubscription = this.errorService.$errors.subscribe(e => this.hasErrors = e.length > 0);
   }
+
   ngOnDestroy(): void {
-    this.subscriber.unsubscribe();
+    this.employeeSubscription.unsubscribe();
+    this.errorsSubscription.unsubscribe();
+  }
+
+  setNewEmployee() {
+    const newEmployee: Resource<EmployeeViewModel> = {
+      data: {
+        address: {},
+        manager: {}
+      },
+      links: []
+    }
+    this.selectedEmployee = newEmployee;
+    this.createModeEnabled = true;
   }
 
   resetInitialVars() {
@@ -62,20 +87,27 @@ export class EditorComponent implements OnDestroy {
   }
 
   loadInitialVars() {
-    if (!this.nonReactiveName) {
-      this.nonReactiveName = this.selectedEmployee?.data.firstName;
+    if (!this.selectedEmployee) {
+      return;
     }
 
-    if (!this.link) {
-      this.link = this.selectedEmployee?.links.find(l => l.rel === "self");
+    this.nonReactiveName = this.selectedEmployee.data.firstName;
+
+    this.link = this.selectedEmployee.links.find(l => l.rel === "self");
+  }
+
+  loadManager() {
+    if (!this.selectedEmployee) {
+      return;
     }
 
-    const managerLink = this.selectedEmployee?.links.find(l => l.rel === 'manager');
+    const managerLink = this.selectedEmployee.links.find(l => l.rel === 'manager');
     if (managerLink) {
       this.employeeService.requestManager(managerLink.href)
         .subscribe(m => this.manager = m);
+    } else {
+      this.manager = null;
     }
-
   }
 
   createEmployee() {
@@ -91,7 +123,7 @@ export class EditorComponent implements OnDestroy {
       return;
     }
 
-    this.employeeService.updateEmployee(this.link!.href, this.selectedEmployee.data);
+    this.employeeService.updateEmployee(this.link.href, this.selectedEmployee.data);
   }
 
   deleteEmployee() {
@@ -111,8 +143,17 @@ export class EditorComponent implements OnDestroy {
     this.employeeService.deactivateEmployee(this.link.href, this.selectedEmployee.data);
   }
 
+  reactivateEmployee() {
+    if (!this.selectedEmployee || !this.link) {
+      return;
+    }
+
+    this.employeeService.reactivateEmployee(this.link.href, this.selectedEmployee.data);
+  }
+
   closeEditor() {
-    this.employeeService.closeEmployeeEditor();
+    this.editorService.closeEditor();
+    this.employeeService.unsetEmployee();
   }
 
   public get lookupItems(): typeof LookupItemsEnum {

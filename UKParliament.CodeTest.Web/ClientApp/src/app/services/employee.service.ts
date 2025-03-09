@@ -7,6 +7,7 @@ import { Resource } from '../models/resource';
 import { ResourceCollection } from '../models/resource-collection';
 import { ErrorService } from './error.service';
 import { ErrorBag } from '../models/errors/error-bag';
+import { Utilities } from '../utilities/utilities';
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +15,24 @@ import { ErrorBag } from '../models/errors/error-bag';
 
 export class EmployeeService {
   constructor(
-    private http: HttpClient, @Inject('BASE_URL')
+    private http: HttpClient,
+    @Inject('BASE_URL')
     private baseUrl: string,
     private filterService: FilterService,
     private errorService: ErrorService) { }
 
   createEmployeeLink?: string;
-  employeeListSubject = new Subject<ResourceCollection<Resource<EmployeeViewModel>>>();
+  $employeeList = new Subject<ResourceCollection<Resource<EmployeeViewModel>>>();
 
   activeEmployee: Resource<EmployeeViewModel> | null = null;
-  employeeSubject = new BehaviorSubject<Resource<EmployeeViewModel> | null>(null);
+  $activeEmployee = new BehaviorSubject<Resource<EmployeeViewModel> | null>(null);
 
   public fetchEmployees() {
     const filters = this.filterService.getCurrentFilters();
     const params = new URLSearchParams(filters);
     this.http.get<Resource<ResourceCollection<Resource<EmployeeViewModel>>>>(`${this.baseUrl}api/employee?${params}`).subscribe(employees => {
       this.createEmployeeLink = employees.links.find(l => l.rel = "self")?.href;
-      this.employeeListSubject.next(employees.data);
+      this.$employeeList.next(employees.data);
     })
   }
 
@@ -38,29 +40,20 @@ export class EmployeeService {
     return this.http.get<Resource<EmployeeViewModel>>(url);
   }
 
-  public selectEmployee(url: string) {
+  public selectEmployee(url: string, callback: Function | null = null) {
     this.http.get<Resource<EmployeeViewModel>>(url).subscribe(resource => {
       this.activeEmployee = resource;
-      this.employeeSubject.next(this.activeEmployee);
-    })
+      this.$activeEmployee.next(this.activeEmployee);
+
+      if (callback) {
+        callback();
+      }
+    });
   }
 
-  public openEditorForCreate() {
-    const newEmployee: Resource<EmployeeViewModel> = {
-      data: {
-        address: {},
-        manager: {}
-      },
-      links: []
-    }
-
-    this.activeEmployee = newEmployee;
-    this.employeeSubject.next(newEmployee);
-  }
-
-  public closeEmployeeEditor() {
+  public unsetEmployee() {
     this.activeEmployee = null;
-    this.employeeSubject.next(null);
+    this.$activeEmployee.next(this.activeEmployee);
   }
 
   public createEmployee(employee: EmployeeViewModel) {
@@ -70,12 +63,12 @@ export class EmployeeService {
 
     this.sanitiseDates(employee);
 
-    const toSend = this.cleanEmpty(employee);
+    const toSend = Utilities.CleanEmptyObjects(employee);
 
     this.http.post<Resource<EmployeeViewModel>>(this.createEmployeeLink, toSend).subscribe({
       next: result => {
         this.activeEmployee = result;
-        this.employeeSubject.next(this.activeEmployee);
+        this.$activeEmployee.next(this.activeEmployee);
       },
       error: error => {
         const errorResp = error as HttpErrorResponse;
@@ -86,7 +79,13 @@ export class EmployeeService {
   }
 
   public deactivateEmployee(url: string, employee: EmployeeViewModel) {
-    employee.dateLeft = this.DateOnly("", true);
+    employee.dateLeft = Utilities.DateOnly();
+
+    this.updateEmployee(url, employee);
+  }
+
+  public reactivateEmployee(url: string, employee: EmployeeViewModel) {
+    employee.dateLeft = "";
 
     this.updateEmployee(url, employee);
   }
@@ -97,7 +96,7 @@ export class EmployeeService {
     this.http.put<Resource<EmployeeViewModel>>(url, employee).subscribe({
       next: result => {
         this.activeEmployee = result;
-        this.employeeSubject.next(this.activeEmployee);
+        this.$activeEmployee.next(this.activeEmployee);
         this.fetchEmployees();
       },
       error: error => {
@@ -120,41 +119,12 @@ export class EmployeeService {
   }
 
   private sanitiseDates(employee: EmployeeViewModel) {
-    employee.dateJoined = this.DateOnly(employee?.dateJoined);
-    employee.doB = this.DateOnly(employee?.doB);
+    employee.dateJoined = Utilities.DateOnly(employee?.dateJoined);
+    employee.doB = Utilities.DateOnly(employee?.doB);
 
     if (employee.dateLeft !== null && (employee?.dateLeft?.length ?? 0) > 0) {
-      employee.dateLeft = this.DateOnly(employee?.dateLeft);
+      employee.dateLeft = Utilities.DateOnly(employee?.dateLeft);
     }
-  }
-
-  private DateOnly(date?: string, createNew = false) {
-    if (!date) {
-      return;
-    }
-    if (createNew) {
-      return new Date().toISOString().split("T")[0];
-    }
-
-    return new Date(date!).toISOString().split("T")[0];
-  }
-
-  private cleanEmpty(obj: Object): any {
-    let clean: any = {}
-    for (const entry in obj) {
-      let val = obj[entry as keyof Object];
-      if (val instanceof Object) {
-        const recursed = this.cleanEmpty(val);
-        if (Object.keys(recursed).length === 0) {
-          continue;
-        }
-      }
-
-      if (val) {
-        clean[entry] = val;
-      }
-    }
-    return clean;
   }
 }
 

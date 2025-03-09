@@ -1,193 +1,221 @@
 <div class="container">
-  @if (selectedEmployee) {
-    @if (createModeEnabled) {
-      <div class="top-section">
-        <div class="title">
-          <h1>Create employee</h1>
-        </div>
-        <div class="action-buttons">
-          <app-button type="button" (click)="closeEditor()">
-            <i class="bx bx-exit"></i>
-            Exit
-          </app-button>
-        </div>
-      </div>
-    } @else {
-      <div class="top-section">
-        <div class="title">
-          <h1>Edit {{ selectedEmployee.data.employeeType }}</h1>
-          <h2>
-            {{ selectedEmployee.data.lastName }},
-            {{ selectedEmployee.data.firstName }}
-          </h2>
-        </div>
-        <div class="action-buttons">
-          <app-button type="button" (click)="deactivateEmployee()">
-            <i class="bx bx-user-x"></i>
-            Make employee inactive
-          </app-button>
-          <app-button type="button" (click)="deleteEmployee()">
-            <i class="bx bx-trash"></i>
-            Delete
-          </app-button>
-          <app-button type="button" (click)="closeEditor()">
-            <i class="bx bx-exit"></i>
-            Exit
-          </app-button>
-        </div>
-      </div>
-    }
-
-    <form
-      (submit)="
-        $event.preventDefault();
-        createModeEnabled ? createEmployee() : saveEmployee()
-      "
-      class="form"
-    >
-      <app-form-section title="Employee Profile">
-        <div class="profile-section">
-          @if (!createModeEnabled) {
-            <div class="other-details">
-              <div class="avatar">
-                <img
-                  [src]="
-                    'https://avatar.iran.liara.run/public?username=' +
-                    nonReactiveName
-                  "
-                  alt="Employee avatar"
-                />
-              </div>
-              <div class="updated">
-                Created on
-                {{ selectedEmployee.data.createdAt | date: "medium" }}, last
-                updated on
-                {{ selectedEmployee.data.updatedAt | date: "medium" }}
-              </div>
+    @if (selectedEmployee) {
+        @if (createModeEnabled) {
+            <div class="top-section">
+                <div class="title">
+                    <h1>Create employee</h1>
+                </div>
+                <div class="action-buttons">
+                    <app-button type="button" (click)="closeEditor()">
+                        <i class="bx bx-exit"></i>
+                        Exit
+                    </app-button>
+                </div>
             </div>
-          }
-          <div class="details">
-            <app-textbox
-              [id]="'FirstName'"
-              label="First name"
-              [(value)]="selectedEmployee.data.firstName"
-            ></app-textbox>
-            <app-textbox
-              [id]="'LastName'"
-              label="Last name"
-              [(value)]="selectedEmployee.data.lastName"
-            ></app-textbox>
-            <app-date-picker
-              [id]="'DoB'"
-              label="Date of birth"
-              [value]="selectedEmployee.data.doB | date: 'yyyy-MM-dd'"
-              (valueChange)="selectedEmployee.data.doB = $event"
-            ></app-date-picker>
-          </div>
-        </div>
-      </app-form-section>
+        } @else {
+            <div class="top-section">
+                <div class="title">
+                    <h1>Edit {{ selectedEmployee.data.employeeType }}</h1>
+                    <h2>
+                        {{ selectedEmployee.data.lastName }},
+                        {{ selectedEmployee.data.firstName }}
+                    </h2>
+                    <div class="updated">
+                        Created on
+                        {{ selectedEmployee.data.createdAt | date: "medium" }},
+                        last updated on
+                        {{ selectedEmployee.data.updatedAt | date: "medium" }}
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    @if (selectedEmployee.data.dateLeft) {
+                        <app-button
+                            type="button"
+                            (click)="reactivateEmployee()"
+                        >
+                            <i class="bx bxs-user-check"></i>
+                            Mark as active
+                        </app-button>
+                    } @else {
+                        <app-button
+                            type="button"
+                            (click)="deactivateEmployee()"
+                        >
+                            <i class="bx bxs-user-x"></i>
+                            Mark as inactive
+                        </app-button>
+                    }
 
-      <hr />
-
-      <app-form-section title="Address">
-        <app-textbox
-          [id]="'address1'"
-          label="Address"
-          [(value)]="selectedEmployee.data.address.address1"
-        ></app-textbox>
-        <app-textbox
-          [id]="'address2'"
-          label="Address"
-          [showLabel]="false"
-          [(value)]="selectedEmployee.data.address.address2"
-        ></app-textbox>
-
-        <div class="postcode-combi">
-          <app-textbox
-            class="postcode-el"
-            [id]="'postcode'"
-            label="Postcode"
-            [(value)]="selectedEmployee.data.address.postcode"
-          ></app-textbox>
-          <app-textbox
-            class="county-el"
-            [id]="'county'"
-            label="County"
-            [(value)]="selectedEmployee.data.address.county"
-          ></app-textbox>
-        </div>
-      </app-form-section>
-
-      <hr />
-
-      <app-form-section title="Employment Details">
-        <app-dropdown
-          label="Department"
-          text="Department"
-          [id]="'department'"
-          [itemToLook]="lookupItems.Department"
-          [(value)]="selectedEmployee.data.department"
-        >
-        </app-dropdown>
-
-        <div class="employment-dates">
-          <app-date-picker
-            [id]="'DateJoined'"
-            label="Date employment started"
-            [value]="selectedEmployee.data.dateJoined | date: 'yyyy-MM-dd'"
-            (valueChange)="selectedEmployee.data.dateJoined = $event"
-          ></app-date-picker>
-          <app-date-picker
-            [id]="'DateLeft'"
-            label="Date employment ended"
-            [value]="selectedEmployee.data.dateLeft | date: 'yyyy-MM-dd'"
-            (valueChange)="selectedEmployee.data.dateLeft = $event"
-            [disabled]="!selectedEmployee.data.inactive"
-          ></app-date-picker>
-        </div>
-
-        <div class="payment-section">
-          <app-dropdown
-            class="payband-el"
-            label="Pay band"
-            text="Pay band"
-            [id]="'payband'"
-            [itemToLook]="lookupItems.PayBand"
-            [(value)]="selectedEmployee.data.payBand"
-          >
-          </app-dropdown>
-          <app-number
-            class="salary-el"
-            [id]="'salary'"
-            label="Salary"
-            [(value)]="selectedEmployee.data.salary"
-          ></app-number>
-        </div>
-
-        <app-textbox
-          id="bank account"
-          label="Bank-account"
-          [(value)]="selectedEmployee.data.bankAccount"
-        ></app-textbox>
-
-        @if (manager) {
-          <div class="manager">
-            <span tabindex="0">Managed by</span>
-            <app-card [employee]="manager"></app-card>
-          </div>
+                    <app-button type="button" (click)="deleteEmployee()">
+                        <i class="bx bxs-user-minus"></i>
+                        Delete
+                    </app-button>
+                    <app-button type="button" (click)="closeEditor()">
+                        <i class="bx bx-exit"></i>
+                        Exit
+                    </app-button>
+                </div>
+            </div>
         }
-      </app-form-section>
 
-      <div class="bottom-section">
-        <div class="submit">
-          <app-button type="submit">Save changes</app-button>
-          <app-button type="button" (click)="closeEditor()"
-            >Cancel and go back</app-button
-          >
-        </div>
-      </div>
-    </form>
-  } @else {
-    <div>There was no selected employee... How did you get here?</div>
-  }
+        <form
+            (submit)="
+                $event.preventDefault();
+                createModeEnabled ? createEmployee() : saveEmployee()
+            "
+            class="form"
+        >
+            <app-form-section title="Employee Profile">
+                <div class="profile-section">
+                    @if (!createModeEnabled) {
+                        <div class="other-details">
+                            <div class="avatar">
+                                <img
+                                    [src]="
+                                        'https://avatar.iran.liara.run/public?username=' +
+                                        nonReactiveName
+                                    "
+                                    alt="Employee avatar"
+                                />
+                            </div>
+                            <div class="id">
+                                Unique Id: {{ selectedEmployee.data.id }}
+                            </div>
+                        </div>
+                    }
+                    <div class="details">
+                        <app-textbox
+                            [id]="'FirstName'"
+                            label="First name"
+                            [(value)]="selectedEmployee.data.firstName"
+                        ></app-textbox>
+                        <app-textbox
+                            [id]="'LastName'"
+                            label="Last name"
+                            [(value)]="selectedEmployee.data.lastName"
+                        ></app-textbox>
+                        <app-date-picker
+                            [id]="'DoB'"
+                            label="Date of birth"
+                            [value]="
+                                selectedEmployee.data.doB | date: 'yyyy-MM-dd'
+                            "
+                            (valueChange)="selectedEmployee.data.doB = $event"
+                        ></app-date-picker>
+                    </div>
+                </div>
+            </app-form-section>
+
+            <hr />
+
+            <app-form-section title="Address">
+                <app-textbox
+                    [id]="'address1'"
+                    label="Address"
+                    [(value)]="selectedEmployee.data.address.address1"
+                ></app-textbox>
+                <app-textbox
+                    [id]="'address2'"
+                    label="Address"
+                    [showLabel]="false"
+                    [(value)]="selectedEmployee.data.address.address2"
+                ></app-textbox>
+
+                <div class="postcode-combi">
+                    <app-textbox
+                        class="postcode-el"
+                        [id]="'postcode'"
+                        label="Postcode"
+                        [(value)]="selectedEmployee.data.address.postcode"
+                    ></app-textbox>
+                    <app-textbox
+                        class="county-el"
+                        [id]="'county'"
+                        label="County"
+                        [(value)]="selectedEmployee.data.address.county"
+                    ></app-textbox>
+                </div>
+            </app-form-section>
+
+            <hr />
+
+            <app-form-section title="Employment Details">
+                <app-dropdown
+                    label="Department"
+                    text="Department"
+                    [id]="'department'"
+                    [itemToLook]="lookupItems.Department"
+                    [(value)]="selectedEmployee.data.department"
+                >
+                </app-dropdown>
+
+                <div class="employment-dates">
+                    <app-date-picker
+                        [id]="'DateJoined'"
+                        label="Date employment started"
+                        [value]="
+                            selectedEmployee.data.dateJoined
+                                | date: 'yyyy-MM-dd'
+                        "
+                        (valueChange)="
+                            selectedEmployee.data.dateJoined = $event
+                        "
+                    ></app-date-picker>
+                    <app-date-picker
+                        [id]="'DateLeft'"
+                        label="Date employment ended"
+                        [value]="
+                            selectedEmployee.data.dateLeft | date: 'yyyy-MM-dd'
+                        "
+                        (valueChange)="selectedEmployee.data.dateLeft = $event"
+                        [disabled]="!selectedEmployee.data.inactive"
+                    ></app-date-picker>
+                </div>
+
+                <div class="payment-section">
+                    <app-dropdown
+                        class="payband-el"
+                        label="Pay band"
+                        text="Pay band"
+                        [id]="'payband'"
+                        [itemToLook]="lookupItems.PayBand"
+                        [(value)]="selectedEmployee.data.payBand"
+                    >
+                    </app-dropdown>
+                    <app-number
+                        class="salary-el"
+                        [id]="'salary'"
+                        label="Salary"
+                        [(value)]="selectedEmployee.data.salary"
+                    ></app-number>
+                </div>
+
+                <app-textbox
+                    id="bank account"
+                    label="Bank-account"
+                    [(value)]="selectedEmployee.data.bankAccount"
+                ></app-textbox>
+
+                @if (manager) {
+                    <div class="manager">
+                        <span tabindex="0">Managed by</span>
+                        <app-card [employee]="manager"></app-card>
+                    </div>
+                }
+            </app-form-section>
+
+            <div class="bottom-section">
+                <div class="submit">
+                    <app-button type="submit" [disabled]="hasErrors"
+                        >Save changes</app-button
+                    >
+                    <app-button type="button" (click)="closeEditor()"
+                        >Cancel and go back</app-button
+                    >
+                </div>
+            </div>
+        </form>
+    } @else {
+        <div>There was no selected employee... How did you get here?</div>
+    }
 </div>

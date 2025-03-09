@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FilterSelectComponent } from '../filter-select/filter-select.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from 'src/app/services/error.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dropdown',
@@ -11,7 +12,8 @@ import { ErrorService } from 'src/app/services/error.service';
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss'
 })
-export class DropdownComponent extends FilterSelectComponent {
+export class DropdownComponent extends FilterSelectComponent implements OnDestroy {
+
   @Input({ required: true })
   label!: string;
 
@@ -21,12 +23,18 @@ export class DropdownComponent extends FilterSelectComponent {
   @Input()
   disabled = false;
 
+  lookupSubscription: Subscription | undefined;
+
   ngOnInit(): void {
-    this.lookupService.lookUpItem(this.itemToLook).subscribe(item => {
+    this.lookupSubscription = this.lookupService.lookUpItem(this.itemToLook).subscribe(item => {
       this.itemList = item;
       this.loading = false;
     })
     this.getLookupItems()
+  }
+
+  ngOnDestroy(): void {
+    this.lookupSubscription?.unsubscribe();
   }
 
 }

@@ -5,6 +5,6 @@ export class SearchRequest {
     employeeType: EmployeeTypeEnum | "" = "";
     payBand = "";
     department = "";
-    limit = "20";
+    limit = "21";
     page = "1";
 }

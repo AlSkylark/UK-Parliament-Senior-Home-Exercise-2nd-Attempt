@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EditorService } from 'src/app/services/editor.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
@@ -9,9 +10,10 @@ import { EmployeeService } from 'src/app/services/employee.service';
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent {
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private employeeService: EmployeeService, private editorService: EditorService) { }
 
   openEditorForCreate() {
-    this.employeeService.openEditorForCreate();
+    this.employeeService.unsetEmployee();
+    this.editorService.openEditor()
   }
 }

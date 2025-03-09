@@ -6,6 +6,7 @@ import { ResourceCollection } from 'src/app/models/resource-collection';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { CardComponent } from "../card/card.component";
 import { PaginationComponent } from "../../pagination/pagination.component";
+import { EditorService } from 'src/app/services/editor.service';
 
 @Component({
   selector: 'app-result-list',
@@ -20,12 +21,12 @@ export class ResultListComponent {
   employeeCollection: ResourceCollection<Resource<EmployeeViewModel>> | undefined;
   selectedEmployee: Resource<EmployeeViewModel> | null = null;
 
-  constructor(private employeeService: EmployeeService) {
-    this.employeeService.employeeListSubject.subscribe(collection => this.employeeCollection = collection);
-    this.employeeService.employeeSubject.subscribe(e => {
+  constructor(private employeeService: EmployeeService, private editorService: EditorService) {
+    this.employeeService.$employeeList.subscribe(collection => this.employeeCollection = collection);
+    this.employeeService.$activeEmployee.subscribe(e => {
       this.selectedEmployee = e;
-      this.editorIsOpen = !!e
     });
+    this.editorService.$editorOpen.subscribe(val => this.editorIsOpen = val);
   }
 
 }

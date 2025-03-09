@@ -7,6 +7,7 @@ import { SearchRequest } from 'src/app/models/search-request';
 import { FilterService } from 'src/app/services/filter.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ButtonComponent } from "../inputs/button/button.component";
+import { EditorService } from 'src/app/services/editor.service';
 
 @Component({
   selector: 'app-search',
@@ -19,10 +20,18 @@ export class SearchComponent implements OnInit {
 
   editorIsOpen = false;
 
-  constructor(private filterService: FilterService, private employeeService: EmployeeService) { }
+  constructor(private filterService: FilterService, private employeeService: EmployeeService, private editorService: EditorService) { }
   ngOnInit(): void {
     this.filterService.filtersSubject.subscribe(f => this.filters = f);
-    this.employeeService.employeeSubject.subscribe(e => this.editorIsOpen = !!e);
+    this.editorService.$editorOpen.subscribe(isOpen => {
+      this.editorIsOpen = isOpen
+      if (!isOpen &&
+        (this.filters.employeeType != ""
+          || this.filters.payBand != ""
+          || this.filters.department != "")) {
+        this.showFilters = true;
+      }
+    });
     this.employeeService.fetchEmployees();
   }
 
