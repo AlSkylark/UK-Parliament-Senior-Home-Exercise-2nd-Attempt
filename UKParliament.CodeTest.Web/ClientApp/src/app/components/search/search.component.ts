@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TextboxComponent } from "../inputs/textbox/textbox.component";
 import { FilterSelectComponent } from "../inputs/filter-select/filter-select.component";
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { FilterService } from 'src/app/services/filter.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { ButtonComponent } from "../inputs/button/button.component";
 import { EditorService } from 'src/app/services/editor.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -16,23 +17,39 @@ import { EditorService } from 'src/app/services/editor.service';
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
 
   editorIsOpen = false;
+  editorInCreateMode = false;
 
-  constructor(private filterService: FilterService, private employeeService: EmployeeService, private editorService: EditorService) { }
-  ngOnInit(): void {
-    this.filterService.filtersSubject.subscribe(f => this.filters = f);
-    this.editorService.$editorOpen.subscribe(isOpen => {
-      this.editorIsOpen = isOpen
+  filterSubscription: Subscription;
+  editorSubscription: Subscription;
+  constructor(private filterService: FilterService, private employeeService: EmployeeService, private editorService: EditorService) {
+    this.filterSubscription = this.filterService.filtersSubject.subscribe(f => this.filters = f);
+
+    this.editorSubscription = this.editorService.$editorOpen.subscribe(isOpen => {
+
+      this.editorIsOpen = isOpen;
+      this.editorInCreateMode = this.editorIsOpen && this.employeeService.activeEmployee === null;
+
       if (!isOpen &&
         (this.filters.employeeType != ""
           || this.filters.payBand != ""
           || this.filters.department != "")) {
         this.showFilters = true;
       }
+
     });
+  }
+
+
+  ngOnInit(): void {
     this.employeeService.fetchEmployees();
+  }
+
+  ngOnDestroy(): void {
+    this.filterSubscription.unsubscribe();
+    this.editorSubscription.unsubscribe();
   }
 
   filters: SearchRequest = new SearchRequest();
@@ -58,5 +75,10 @@ export class SearchComponent implements OnInit {
 
   search() {
     this.employeeService.fetchEmployees();
+  }
+
+  openEditorForCreate() {
+    this.employeeService.unsetEmployee();
+    this.editorService.openEditor()
   }
 }
