@@ -5,7 +5,7 @@
 
     .spinner {
         position: absolute;
-        background-color: white;
+        background-color: var(--colour-white);
         border-radius: 50px;
         right: 0;
         top: 4px;
@@ -16,6 +16,7 @@
         @include t.filter-item-style;
 
         option {
+            color: black;
             width: 120px;
             overflow: hidden;
         }

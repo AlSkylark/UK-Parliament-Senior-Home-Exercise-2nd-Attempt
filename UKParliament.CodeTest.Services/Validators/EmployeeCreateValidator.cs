@@ -14,13 +14,15 @@ public class EmployeeCreateValidator : AbstractValidator<EmployeeViewModel>
 
         RuleFor(e => e.PayBand)
             .Must(pb => lookUpService.SearchPayBands(pb).Any())
-            .When(e => e.PayBand is not null)
+            .When(e => !string.IsNullOrWhiteSpace(e.PayBand))
             .WithMessage("The PayBand you've assigned couldn't be found");
 
-        RuleFor(e => e.Salary)
-            .Must((vm, salary) => lookUpService.SearchPayBands(vm.PayBand).Any())
+        RuleFor(e => e.PayBand)
+            .Must(pb => !string.IsNullOrWhiteSpace(pb))
             .When(e => e.Salary is not null)
-            .WithMessage("You need to assign a PayBand to set a salary")
+            .WithMessage("You need to assign a PayBand to set a salary");
+
+        RuleFor(e => e.Salary)
             .Must(
                 (vm, salary) =>
                 {
@@ -29,11 +31,11 @@ public class EmployeeCreateValidator : AbstractValidator<EmployeeViewModel>
                     return salary >= payBand!.MinPay && salary <= payBand!.MaxPay;
                 }
             )
-            .When(vm => vm.PayBand is not null)
+            .When(vm => !string.IsNullOrWhiteSpace(vm.PayBand))
             .WithMessage(vm =>
             {
                 var payBand = lookUpService.SearchPayBands(vm.PayBand).FirstOrDefault();
-                return $"Salary must be between PayBand minimum pay ({payBand!.MinPay.ToString("C")}) and maximum pay ({payBand!.MaxPay.ToString("C")})";
+                return $"Salary must be between PayBand minimum pay ({payBand!.MinPay:C}) and maximum pay ({payBand!.MaxPay:C})";
             });
     }
 }

@@ -9,9 +9,12 @@ public class Employee : BaseEntity
     public string? BankAccount { get; set; }
     public DateOnly DateJoined { get; set; }
     public DateOnly? DateLeft { get; set; }
-    public decimal Salary { get; set; }
+    public decimal? Salary { get; set; }
 
+    public int? PayBandId { get; set; }
     public PayBand? PayBand { get; set; }
+
+    public int? DepartmentId { get; set; }
     public Department? Department { get; set; }
 
     public Address? Address { get; set; }

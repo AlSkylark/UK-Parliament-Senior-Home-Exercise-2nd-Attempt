@@ -1,0 +1,17 @@
+.wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    max-width: fit-content;
+    padding: 10px;
+    margin: 5px;
+    color: var(--colour-black);
+    background-color: var(--colour-success-light);
+    border: 1px solid var(--colour-success-dark);
+
+    &.error {
+        background-color: var(--colour-error-light);
+        border: 1px solid var(--colour-error-dark);
+    }
+}

@@ -10,7 +10,8 @@
 
     border: none;
     padding: 10px;
-    background-color: c.$colour-white;
+    background-color: var(--colour-white);
+    color: var(--colour-black);
     font-size: 1.1rem;
 }
 
@@ -49,7 +50,7 @@
         right: 0;
         display: flex;
         flex-direction: column;
-        background-color: c.$colour-white;
+        background-color: var(--colour-white);
         border: t.$limiter-border-style;
 
         .dropdown-button {

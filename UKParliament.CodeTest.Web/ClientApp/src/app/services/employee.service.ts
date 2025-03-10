@@ -8,6 +8,7 @@ import { ResourceCollection } from '../models/resource-collection';
 import { ErrorService } from './error.service';
 import { ErrorBag } from '../models/errors/error-bag';
 import { Utilities } from '../utilities/utilities';
+import { EditorAlertService } from './editor-alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class EmployeeService {
     @Inject('BASE_URL')
     private baseUrl: string,
     private filterService: FilterService,
-    private errorService: ErrorService) { }
+    private errorService: ErrorService,
+    private alertService: EditorAlertService) { }
 
   createEmployeeLink?: string;
   $employeeList = new Subject<ResourceCollection<Resource<EmployeeViewModel>>>();
@@ -61,19 +63,22 @@ export class EmployeeService {
       return;
     }
 
-    this.sanitiseDates(employee);
 
     const toSend = Utilities.CleanEmptyObjects(employee);
+    this.sanitiseDates(toSend);
 
     this.http.post<Resource<EmployeeViewModel>>(this.createEmployeeLink, toSend).subscribe({
       next: result => {
         this.activeEmployee = result;
         this.$activeEmployee.next(this.activeEmployee);
+        this.fetchEmployees();
+        this.alertService.sendAlert("✔️ Employee created successfully!");
       },
       error: error => {
         const errorResp = error as HttpErrorResponse;
         console.log(error);
         this.errorService.displayErrors(errorResp.error as ErrorBag);
+        this.alertService.sendAlert("❌ Unable to create employee", true);
       }
     })
   }
@@ -85,7 +90,7 @@ export class EmployeeService {
   }
 
   public reactivateEmployee(url: string, employee: EmployeeViewModel) {
-    employee.dateLeft = "";
+    employee.dateLeft = undefined;
 
     this.updateEmployee(url, employee);
   }
@@ -98,13 +103,15 @@ export class EmployeeService {
         this.activeEmployee = result;
         this.$activeEmployee.next(this.activeEmployee);
         this.fetchEmployees();
+        this.alertService.sendAlert("✔️ Employee saved successfully!");
       },
       error: error => {
         const errorResp = error as HttpErrorResponse;
         console.log(error);
         this.errorService.displayErrors(errorResp.error as ErrorBag);
+        this.alertService.sendAlert("❌ Unable to save employee", true);
       }
-    })
+    });
   }
 
   public deleteEmployee(url: string) {

@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { SkipComponent } from "./components/skip/skip.component";
 import { MainComponent } from './components/main/main.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,7 @@ import { MainComponent } from './components/main/main.component';
     bootstrap: [AppComponent],
     imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-        SkipComponent,
+        BrowserAnimationsModule,
         FormsModule,
         RouterModule.forRoot([
             { path: '', component: MainComponent, pathMatch: 'full' }

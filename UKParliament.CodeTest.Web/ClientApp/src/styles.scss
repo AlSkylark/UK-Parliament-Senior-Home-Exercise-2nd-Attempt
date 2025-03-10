@@ -5,14 +5,14 @@
 *,
 *:after,
 *:before {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: c.$colour-white;
-  color: c.$colour-black;
-  margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--colour-white);
+    color: var(--colour-black);
+    margin: 0;
 }
 
 h1,
@@ -20,71 +20,71 @@ h2,
 h3,
 h4,
 h5 {
-  margin: 0 !important;
+    margin: 0 !important;
 }
 
 hr {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid #80808026;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #80808026;
 }
 
 strong.highlight {
-  color: c.$colour-purple;
+    color: var(--colour-purple);
 }
 
 table {
-  thead {
-    th {
-      color: c.$colour-purple !important;
-      vertical-align: top;
+    thead {
+        th {
+            color: var(--colour-purple) !important;
+            vertical-align: top;
+        }
     }
-  }
 }
 
 .table-responsive {
-  overflow-x: auto;
+    overflow-x: auto;
 
-  .table {
-    min-width: 600px;
-  }
+    .table {
+        min-width: 600px;
+    }
 }
 
 .bx {
-  color: c.$colour-purple;
+    color: var(--colour-purple);
 }
 
 button {
-  .bx {
-    color: inherit;
-  }
+    .bx {
+        color: inherit;
+    }
 }
 
 a {
-  &:focus {
-    text-decoration: none;
-    @include t.focus-style(true);
-  }
+    &:focus {
+        text-decoration: none;
+        @include t.focus-style(true);
+    }
 }
 
 .validation-messages {
-  color: c.$colour-error-dark;
+    color: var(--colour-error-dark);
 
-  .validation-message {
-    &:first-child {
-      margin-top: 10px;
+    .validation-message {
+        &:first-child {
+            margin-top: 10px;
+        }
+        &::before {
+            content: "* ";
+        }
     }
-    &::before {
-      content: "* ";
-    }
-  }
 }
 
 .sr-only {
-  position: absolute;
-  left: -10000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }

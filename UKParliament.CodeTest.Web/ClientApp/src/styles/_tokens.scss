@@ -1,27 +1,25 @@
-@use "colours" as c;
-
 $font-size-big: 1.1rem;
 $font-size-bigger: 1.2rem;
 
-$limiter-border-style: 2px solid c.$colour-purple;
-$limiter-border-style-slim: 1px solid c.$colour-purple;
+$limiter-border-style: 2px solid var(--colour-purple);
+$limiter-border-style-slim: 1px solid var(--colour-purple);
 
-$input-border-style: 2px solid c.$colour-purple;
-$input-border-style-lighter: 1px solid c.$colour-purple-lighter;
+$input-border-style: 2px solid var(--colour-purple);
+$input-border-style-lighter: 1px solid var(--colour-purple-lighter);
 $input-padding-style: 1rem;
 
-$focus-border-style: 2px solid c.$colour-purple;
+$focus-border-style: 2px solid var(--colour-purple);
 $focus-box-shadow-style:
-    0 0 0 2px c.$colour-white,
-    0 0 0 5px c.$colour-purple;
+    0 0 0 2px var(--colour-white),
+    0 0 0 5px var(--colour-purple);
 $focus-box-shadow-style-triple:
-    0 0 0 2px c.$colour-purple,
-    0 0 0 4px c.$colour-white,
-    0 0 0 6px c.$colour-purple;
+    0 0 0 2px var(--colour-purple),
+    0 0 0 4px var(--colour-white),
+    0 0 0 6px var(--colour-purple);
 
 $focus-box-shadow-style-error:
-    0 0 0 2px c.$colour-white,
-    0 0 0 5px c.$colour-error-dark;
+    0 0 0 2px var(--colour-white),
+    0 0 0 5px var(--colour-error-dark);
 
 $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
 
@@ -40,7 +38,6 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
 }
 
 @mixin input-style {
-    margin-top: 5px;
     padding: 10px;
     border: $input-border-style;
     border-radius: 0;
@@ -48,6 +45,8 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
     max-height: 46px;
     font-size: medium;
     font-size: $font-size-big;
+    background-color: var(--colour-white);
+    color: var(--colour-black);
 
     @include error-style;
 
@@ -59,20 +58,21 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
 @mixin error-style {
     &.has-errors,
     .has-errors {
-        border: 2px solid c.$colour-error-dark;
+        border: 2px solid var(--colour-error-dark);
     }
 }
 
 @mixin error-style-text {
     &.has-errors,
     .has-errors {
-        color: c.$colour-error-dark;
+        color: var(--colour-error-dark);
     }
 }
 
 @mixin button-style {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     max-height: 46px;
     width: 100%;
@@ -81,22 +81,22 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
     padding: 10px;
     cursor: pointer;
     border: $input-border-style;
-    color: c.$colour-white;
-    background-color: c.$colour-purple;
+    color: var(--colour-white);
+    background-color: var(--colour-purple);
 
     &:disabled {
-        background-color: c.$colour-grey-2;
-        border-color: c.$colour-grey-1;
-        color: c.$colour-grey-3;
+        background-color: var(--colour-grey-2);
+        border-color: var(--colour-grey-1);
+        color: var(--colour-grey-3);
         cursor: default;
     }
 
     &:hover:not(:disabled) {
-        background-color: c.$colour-purple-lighter;
+        background-color: var(--colour-purple-lighter);
     }
 
     &:active:not(:disabled) {
-        background-color: c.$colour-purple-darker;
+        background-color: var(--colour-purple-darker);
     }
 
     &:focus:not(:disabled) {
@@ -109,6 +109,7 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
     align-items: center;
     border: none;
     background-color: transparent;
+    color: var(--colour-black);
     font-size: $font-size-big;
     border-bottom: 2px solid transparent;
 
@@ -118,5 +119,26 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
 
     &:hover {
         border-bottom: $input-border-style;
+    }
+}
+
+@mixin input-base {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        &:has(label) {
+            gap: 5px;
+        }
+
+        label {
+            color: var(--colour-black);
+            @include error-style-text;
+        }
+
+        .input {
+            height: 100%;
+            width: 100%;
+            @include input-style;
+        }
     }
 }

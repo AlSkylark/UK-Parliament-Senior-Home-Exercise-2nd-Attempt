@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, computed, HostListener, input, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { FormSectionComponent } from "../inputs/form-section/form-section.component";
 import { EmployeeService } from 'src/app/services/employee.service';
 import { TextboxComponent } from "../inputs/textbox/textbox.component";
@@ -15,28 +15,38 @@ import { Link } from 'src/app/models/link';
 import { ErrorService } from 'src/app/services/error.service';
 import { Subscription } from 'rxjs';
 import { EditorService } from 'src/app/services/editor.service';
-import { FormControl } from '@angular/forms';
+import { EditorAlertComponent } from "../editor-alert/editor-alert.component";
 
 @Component({
   selector: 'app-editor',
   standalone: true,
-  imports: [FormSectionComponent, TextboxComponent, DatePickerComponent, CommonModule, ButtonComponent, DropdownComponent, NumberComponent, CardComponent],
+  imports: [FormSectionComponent, TextboxComponent, DatePickerComponent, CommonModule, ButtonComponent, DropdownComponent, NumberComponent, CardComponent, EditorAlertComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.scss'
 })
 export class EditorComponent implements OnDestroy {
+  initialSelectedEmployee!: Resource<EmployeeViewModel>;
   selectedEmployee!: Resource<EmployeeViewModel>;
+
+
   manager: Resource<EmployeeViewModel> | null = null;
 
   nonReactiveName?: string | null = null;
   link?: Link | null = null;
 
   hasErrors = false;
+  hasChanges = false;
 
   createModeEnabled = false;
 
   employeeSubscription: Subscription;
   errorsSubscription: Subscription;
+
+  @HostListener("input")
+  onChanges() {
+    if (this.hasChanges) return;
+    this.hasChanges = this.initialSelectedEmployee !== this.selectedEmployee;
+  }
 
   constructor(
     private editorService: EditorService,
@@ -53,7 +63,10 @@ export class EditorComponent implements OnDestroy {
       }
 
       this.createModeEnabled = !employee?.data.id;
+
+      this.initialSelectedEmployee = { ...employee };
       this.selectedEmployee = employee;
+      this.hasChanges = false;
 
       this.loadInitialVars();
       this.loadManager();
@@ -76,7 +89,10 @@ export class EditorComponent implements OnDestroy {
       },
       links: []
     }
+
+    this.initialSelectedEmployee = { ...newEmployee };
     this.selectedEmployee = newEmployee;
+
     this.createModeEnabled = true;
   }
 

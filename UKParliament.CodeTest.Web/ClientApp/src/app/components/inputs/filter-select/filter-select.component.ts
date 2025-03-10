@@ -47,8 +47,11 @@ export class FilterSelectComponent implements OnInit, OnDestroy {
   constructor(protected lookupService: LookupService, private errorService: ErrorService) {
     this.errorSubscription = this.errorService.$errors.subscribe(errors => {
       this.validationErrors = errors;
-      this.isValid = !this.validationErrors.some(v => v.propertyName == this.id);
-      this.validationMessages = this.validationErrors.filter(v => v.propertyName == this.id).map(v => v.errorMessage);
+      this.isValid = !this.validationErrors
+        .some(v => v.propertyName.toLocaleUpperCase() == this.id.toLocaleUpperCase());
+      this.validationMessages = this.validationErrors
+        .filter(v => v.propertyName.toLocaleUpperCase() == this.id.toLocaleUpperCase())
+        .map(v => v.errorMessage);
     });
   }
 

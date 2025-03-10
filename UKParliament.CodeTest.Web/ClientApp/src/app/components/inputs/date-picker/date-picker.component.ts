@@ -14,9 +14,13 @@ import { ErrorService } from 'src/app/services/error.service';
 export class DatePickerComponent extends BaseComponent<string> {
 
   onInput(event: Event): void {
-    const inputValue = (event.target as HTMLInputElement).value;
-    const date = new Date(inputValue);
-    this.valueChange.emit(date.toISOString());
+    const target = (event.target as HTMLInputElement);
+    const inputValue = target.value;
+    if (!inputValue) {
+      return;
+    }
+
+    this.valueChange.emit(inputValue);
     this.errorService.resetErrors();
   }
 }

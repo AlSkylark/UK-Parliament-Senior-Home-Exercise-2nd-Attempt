@@ -12,132 +12,190 @@ irregular (has no manager, pay, etc.)
 */
 
 .container {
-  display: grid;
-  grid-template-columns: 70px 1fr;
-  grid-template-rows: 1fr;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: t.$decoration-box-shadow;
-  padding: 10px;
-  //background-color: c.$colour-white;
-  height: 100%;
-  position: relative;
-
-  .avatar {
-    z-index: 2;
-
-    .outer-border {
-      display: grid;
-      place-content: center;
-      width: 64px;
-      height: 64px;
-      border-radius: 50px;
-      border: t.$input-border-style;
-      border-width: 3px;
-      z-index: 2;
-      &.manager {
-        border-style: dashed;
-      }
-
-      .inner-border {
-        display: grid;
-        place-content: center;
-        width: 54px;
-        height: 54px;
-        border-radius: 50px;
-        border: t.$input-border-style;
-
-        img {
-          width: 50px;
-          height: 50px;
-        }
-      }
-    }
-  }
-
-  .info {
-    z-index: 2;
-
-    .name {
-      font-size: 1.2rem;
-      color: c.$colour-purple;
-
-      .first-name {
-        color: c.$colour-purple-lighter;
-      }
-      .manager {
-        font-size: 1rem;
-      }
-    }
-    .department {
-      color: c.$colour-grey-1;
-    }
-  }
-
-  .profile {
-    z-index: 2;
-
-    grid-column: 1 / span 2;
-    place-self: center;
-    button {
-      @include t.button-style;
-    }
-  }
-
-  .status {
-    display: none;
-    position: absolute;
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: t.$decoration-box-shadow;
+    padding: 10px;
     height: 100%;
-    width: 100%;
-    z-index: 1;
-    overflow: hidden;
+    position: relative;
+    background-color: var(--colour-white);
+    color: var(--colour-black);
 
-    i {
-      position: absolute;
-      right: 35%;
-      transform: rotate(-20deg) scale(20);
+    &.dark-mode {
+        border: 1px solid rgba(255, 255, 255, 0.308);
+        a {
+            color: var(--colour-purple-darker);
+        }
+        .info {
+            .name {
+                color: var(--colour-black);
+
+                .first-name {
+                    color: var(--colour-purple-darker);
+                }
+            }
+            .department {
+                color: var(--colour-grey-1);
+            }
+        }
+
+        &:has(.status.manager) {
+            .outer-border {
+                border-color: var(--colour-manager-dark);
+                .inner-border {
+                    border-color: var(--colour-manager-dark);
+                }
+            }
+            .info {
+                .name {
+                    color: var(--colour-white);
+                    .first-name {
+                        color: var(--colour-white);
+                    }
+                }
+                .department {
+                    color: var(--colour-white);
+                }
+            }
+        }
+
+        &:has(.status.irregular) {
+            a {
+                color: var(--colour-purple-lighter);
+            }
+            .info {
+                .name {
+                    color: var(--colour-white);
+                    .first-name {
+                        color: var(--colour-white);
+                    }
+                }
+                .department {
+                    color: var(--colour-white);
+                }
+            }
+        }
     }
 
-    &.manager {
-      display: block;
-      background-color: c.$colour-manager-light;
+    .avatar {
+        z-index: 2;
 
-      i {
-        top: 46px;
-        right: 30%;
-        transform: rotate(-20deg) scale(17);
-        color: c.$colour-manager-dark;
-      }
+        .outer-border {
+            display: grid;
+            place-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 50px;
+            border: t.$input-border-style;
+            border-width: 3px;
+            z-index: 2;
+            &.manager {
+                border-style: dashed;
+            }
+
+            .inner-border {
+                display: grid;
+                place-content: center;
+                width: 54px;
+                height: 54px;
+                border-radius: 50px;
+                border: t.$input-border-style;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        }
     }
 
-    &.inactive {
-      display: block;
-      background-color: c.$colour-inactive-light;
+    .info-wrapper {
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 5px;
 
-      i {
-        color: c.$colour-inactive-dark;
-      }
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+        }
+
+        &.editor-open {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+        }
+
+        .info {
+            .name {
+                font-size: 1.2rem;
+                color: var(--colour-purple);
+
+                .first-name {
+                    font-weight: 600;
+                    color: var(--colour-purple-lighter);
+                }
+                .manager {
+                    font-size: 1rem;
+                }
+            }
+            .department {
+                color: var(--colour-grey-1);
+            }
+        }
+
+        .profile {
+            width: 100%;
+        }
     }
 
-    &.irregular {
-      display: block;
-      background-color: c.$colour-warning-light;
+    .status {
+        display: none;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        overflow: hidden;
 
-      i {
-        color: c.$colour-warning-dark;
-      }
+        i {
+            position: absolute;
+            right: 35%;
+            transform: rotate(-20deg) scale(20);
+        }
+
+        &.manager {
+            display: block;
+            background-color: var(--colour-manager-light);
+
+            i {
+                top: 46px;
+                right: 30%;
+                transform: rotate(-20deg) scale(17);
+                color: var(--colour-manager-dark);
+            }
+        }
+
+        &.inactive {
+            display: block;
+            background-color: var(--colour-inactive-light);
+
+            i {
+                color: var(--colour-inactive-dark);
+            }
+        }
+
+        &.irregular {
+            display: block;
+            background-color: var(--colour-warning-light);
+
+            i {
+                color: var(--colour-warning-dark);
+            }
+        }
     }
-  }
 
-  &.selected {
-    @include t.focus-style;
-  }
-
-  @include media-breakpoint-up(sm) {
-    grid-template-columns: 70px 1fr auto;
-
-    .profile {
-      grid-column: auto;
+    &.selected {
+        @include t.focus-style;
     }
-  }
 }

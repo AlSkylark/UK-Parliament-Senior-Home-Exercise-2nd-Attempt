@@ -23,8 +23,8 @@ public class EmployeeMapper(
             FirstName = person.FirstName,
             LastName = person.LastName,
             DoB = person.DoB,
-            Department = person.Department?.Name,
-            PayBand = person.PayBand?.Name,
+            Department = person.Department?.Name ?? "",
+            PayBand = person.PayBand?.Name ?? "",
             EmployeeType = person.EmployeeType.GetDescription(),
             Address = person.Address,
             Salary = person.Salary,
@@ -66,17 +66,17 @@ public class EmployeeMapper(
         var employee = new Employee
         {
             Id = vm.Id ?? existing.Id,
-            FirstName = vm.FirstName ?? existing.FirstName,
-            LastName = vm.LastName ?? existing.LastName,
-            DoB = vm.DoB ?? existing.DoB,
-            Address = vm.Address ?? existing.Address,
-            Salary = vm.Salary ?? existing.Salary,
-            BankAccount = vm.BankAccount ?? existing.BankAccount,
+            FirstName = vm.FirstName!,
+            LastName = vm.LastName!,
+            DoB = vm.DoB,
+            Address = vm.Address,
+            Salary = vm.Salary,
+            BankAccount = vm.BankAccount,
             DateJoined = vm.DateJoined ?? existing.DateJoined,
-            DateLeft = vm.DateLeft ?? existing.DateLeft,
-            PayBand = payBand.FirstOrDefault() ?? existing.PayBand,
-            Department = department.FirstOrDefault() ?? existing.Department,
-            ManagerId = vm.ManagerId ?? existing.ManagerId,
+            DateLeft = vm.DateLeft,
+            PayBandId = payBand.FirstOrDefault()?.Id,
+            DepartmentId = department.FirstOrDefault()?.Id,
+            ManagerId = vm.ManagerId,
 
             CreatedAt = existing.CreatedAt,
         };
@@ -86,8 +86,8 @@ public class EmployeeMapper(
 
     public Employee MapForCreate(EmployeeViewModel vm)
     {
-        var payBand = lookUpService.SearchPayBands(vm.PayBand);
-        var department = lookUpService.SearchDepartments(vm.Department);
+        var payBand = lookUpService.SearchPayBands(vm.PayBand ?? "");
+        var department = lookUpService.SearchDepartments(vm.Department ?? "");
 
         var employee = new Employee
         {

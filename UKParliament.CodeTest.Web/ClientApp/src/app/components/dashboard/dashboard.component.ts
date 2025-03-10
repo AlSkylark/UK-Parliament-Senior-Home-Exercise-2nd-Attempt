@@ -7,14 +7,6 @@ import { ResultListComponent } from "../result-list/result-list.component";
 import { CommonModule } from '@angular/common';
 import { EditorService } from 'src/app/services/editor.service';
 import { Subscription } from 'rxjs';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  // ...
-} from '@angular/animations';
 
 @Component({
   selector: 'app-dashboard',

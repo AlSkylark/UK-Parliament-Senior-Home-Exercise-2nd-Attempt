@@ -1,8 +1,12 @@
 <div class="wrapper">
-    <button class="theme container">
-        Theme
-        <i class="bx bxs-moon"></i>
-        <i class="bx bxs-sun"></i>
+    <button class="theme container" (click)="changeTheme()">
+        @if (theme === "light") {
+            Dark mode
+            <i class="bx bxs-moon"></i>
+        } @else {
+            Light mode
+            <i class="bx bxs-sun"></i>
+        }
     </button>
     <div class="user-menu" #userMenu>
         <button class="container" type="menu" (click)="openDropdown()">
