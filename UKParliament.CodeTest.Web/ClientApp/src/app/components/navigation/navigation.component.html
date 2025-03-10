@@ -1,12 +1,32 @@
 <div class="wrapper">
-    <button class="container" type="menu">
-        <i class="bx bxs-chevron-down"></i>
-        <div class="info">Username</div>
-        <div class="avatar">
-            <img
-                src="https://avatar.iran.liara.run/public"
-                alt="Random avatar"
-            />
-        </div>
+    <button class="theme container" (click)="changeTheme()">
+        @if (theme === "light") {
+            Dark mode
+            <i class="bx bxs-moon"></i>
+        } @else {
+            Light mode
+            <i class="bx bxs-sun"></i>
+        }
     </button>
+    <div class="user-menu" #userMenu>
+        <button class="container" type="menu" (click)="openDropdown()">
+            <i class="bx bxs-chevron-down"></i>
+            <div class="info">{{ username }}</div>
+            <div class="avatar">
+                <img
+                    src="https://avatar.iran.liara.run/public"
+                    alt="Random avatar"
+                />
+            </div>
+        </button>
+        @if (isOpen) {
+            <div class="dropdown-contents">
+                <button class="dropdown-button">Admin panel</button>
+
+                <button class="dropdown-button" (click)="signOut()">
+                    Sign out
+                </button>
+            </div>
+        }
+    </div>
 </div>

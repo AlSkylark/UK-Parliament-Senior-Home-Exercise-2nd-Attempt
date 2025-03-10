@@ -6,6 +6,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { ButtonComponent } from "../inputs/button/button.component";
 import { EditorService } from 'src/app/services/editor.service';
 import { Subscription } from 'rxjs';
+import { ThemeService } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-card',
@@ -21,11 +22,14 @@ export class CardComponent implements OnDestroy {
   @Input()
   selected = false;
 
+  isDarkMode = false;
   editorIsOpen = false;
 
   editorSubscription: Subscription;
-  constructor(private employeeService: EmployeeService, private editorService: EditorService) {
+  themeSubscription: Subscription;
+  constructor(private employeeService: EmployeeService, private editorService: EditorService, private themeService: ThemeService) {
     this.editorSubscription = this.editorService.$editorOpen.subscribe(val => this.editorIsOpen = val);
+    this.themeSubscription = this.themeService.$theme.subscribe(t => this.isDarkMode = t === "dark")
   }
 
   ngOnDestroy(): void {

@@ -206,12 +206,19 @@
 
             <div class="bottom-section">
                 <div class="submit">
+                    <app-editor-alert></app-editor-alert>
                     <app-button type="submit" [disabled]="hasErrors"
                         >Save changes</app-button
                     >
-                    <app-button type="button" (click)="closeEditor()"
-                        >Cancel and go back</app-button
-                    >
+                    @if (hasChanges) {
+                        <app-button
+                            class="cancel"
+                            type="button"
+                            (click)="closeEditor()"
+                        >
+                            Cancel and go back
+                        </app-button>
+                    }
                 </div>
             </div>
         </form>

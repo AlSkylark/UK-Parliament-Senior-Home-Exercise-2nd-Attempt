@@ -1,0 +1,8 @@
+<div class="theme" [attr.data-theme]="theme">
+    <app-skip></app-skip>
+    @if (!currentUser) {
+        <app-dashboard></app-dashboard>
+    } @else {
+        <app-login></app-login>
+    }
+</div>

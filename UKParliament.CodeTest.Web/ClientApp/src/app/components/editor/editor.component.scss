@@ -19,6 +19,7 @@ $field-gaps: 1rem;
         justify-content: center;
         align-items: center;
         margin-bottom: 2rem;
+        color: var(--colour-black);
 
         .action-buttons {
             display: flex;
@@ -62,7 +63,7 @@ $field-gaps: 1rem;
                     }
                 }
                 .id {
-                    color: c.$colour-grey-2;
+                    color: var(--colour-grey-2);
                 }
             }
             .details {
@@ -117,7 +118,10 @@ $field-gaps: 1rem;
             align-self: center;
             .submit {
                 display: flex;
-                gap: $field-gaps;
+
+                .cancel {
+                    margin-left: $field-gaps;
+                }
             }
         }
     }

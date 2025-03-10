@@ -13,6 +13,9 @@ import { ErrorService } from 'src/app/services/error.service';
 })
 export class TextboxComponent extends BaseComponent<string> {
 
+  @Input()
+  isPassword = false;
+
   onInput(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
     this.valueChange.emit(inputValue);

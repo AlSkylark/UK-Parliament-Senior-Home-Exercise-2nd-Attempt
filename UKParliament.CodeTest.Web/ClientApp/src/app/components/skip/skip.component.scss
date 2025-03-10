@@ -10,8 +10,8 @@
 
     border: t.$input-border-style;
     padding: t.$input-padding-style;
-    background-color: c.$colour-white;
-    color: c.$colour-black;
+    background-color: var(--colour-white);
+    color: var(--colour-black);
     text-decoration: none;
     font-size: 1.4rem;
 

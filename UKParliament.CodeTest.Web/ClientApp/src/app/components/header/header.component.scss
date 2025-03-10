@@ -14,8 +14,11 @@
         align-items: center;
         margin-top: 3rem;
         border-bottom: t.$limiter-border-style;
+        background-color: var(--colour-white);
+        color: var(--colour-black);
         .logo {
-            padding: 0 30px;
+            margin: 0 30px;
+            color: var(--colour-purple);
         }
         .item {
             border-left: none;
@@ -37,22 +40,22 @@
     .title {
         padding: 2rem 3rem;
         border-bottom: t.$limiter-border-style;
-        background-color: c.$colour-purple;
-        color: c.$colour-white;
+        background-color: var(--colour-purple);
+        color: var(--colour-white);
         button {
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 1rem;
-            background-color: c.$colour-purple;
-            color: c.$colour-white;
+            background-color: var(--colour-purple);
+            color: var(--colour-white);
             border: none;
             &:focus {
                 @include t.focus-style(true);
             }
 
             i {
-                color: c.$colour-white;
+                color: var(--colour-white);
                 font-size: 2.5rem;
             }
         }

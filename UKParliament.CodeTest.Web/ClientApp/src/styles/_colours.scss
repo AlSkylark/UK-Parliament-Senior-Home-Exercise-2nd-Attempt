@@ -1,25 +1,58 @@
 @use "sass:color";
+.theme[data-theme="light"] {
+    --colour-white: white;
 
-$colour-white: white;
+    --colour-purple: #373151;
+    --colour-purple-darker: #2c2843;
+    --colour-purple-lighter: #5a5480;
 
-$colour-purple: #373151;
-$colour-purple-darker: color.adjust($colour-purple, $lightness: -5%);
-$colour-purple-lighter: color.adjust($colour-purple, $lightness: 15%);
+    --colour-grey-1: #4d4d4d;
+    --colour-grey-2: #717171;
+    --colour-grey-3: #f8f7f7;
 
-$colour-grey-1: #4d4d4d;
-$colour-grey-2: #717171;
-$colour-grey-3: #f8f7f7;
+    --colour-black: #212121;
 
-$colour-black: #212121;
+    --colour-inactive-light: var(--colour-grey-3);
+    --colour-inactive-dark: #9c9c9c;
 
-$colour-inactive-light: $colour-grey-3;
-$colour-inactive-dark: #9c9c9c;
+    --colour-warning-light: #fffbea;
+    --colour-warning-dark: #fff1b9;
 
-$colour-warning-light: #fffbea;
-$colour-warning-dark: #fff1b9;
+    --colour-manager-light: #d9edff;
+    --colour-manager-dark: #b7d8f5;
 
-$colour-manager-light: #d9edff;
-$colour-manager-dark: #b7d8f5;
+    --colour-error-light: #f7cbcc;
+    --colour-error-dark: #a72326;
 
-$colour-error-light: #f7cbcc;
-$colour-error-dark: #a72326;
+    --colour-success-light: #eaffea;
+    --colour-success-dark: #0d730d;
+}
+
+.theme[data-theme="dark"] {
+    --colour-white: #212121;
+
+    --colour-purple: #9188bb;
+    --colour-purple-darker: #cdc8ee;
+    --colour-purple-lighter: #5a5480;
+
+    --colour-grey-1: #f8f7f7;
+    --colour-grey-2: #717171;
+    --colour-grey-3: #4d4d4d;
+
+    --colour-black: white;
+
+    --colour-inactive-light: var(--colour-grey-3);
+    --colour-inactive-dark: #797979;
+
+    --colour-warning-light: #f3e29d;
+    --colour-warning-dark: #fffbea;
+
+    --colour-manager-light: #368dda;
+    --colour-manager-dark: #b4d7f5;
+
+    --colour-error-light: #a72326;
+    --colour-error-dark: #f7cbcc;
+
+    --colour-success-light: #172d17;
+    --colour-success-dark: #174f17;
+}
