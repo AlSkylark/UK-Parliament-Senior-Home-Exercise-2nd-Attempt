@@ -32,4 +32,10 @@ public class EmployeeRepository(PersonManagerContext db)
 
         return query;
     }
+
+    public IQueryable<Employee> GetManagerEmployees(int managerId)
+    {
+        var query = base.Search().Where(e => e.ManagerId == managerId);
+        return query;
+    }
 }

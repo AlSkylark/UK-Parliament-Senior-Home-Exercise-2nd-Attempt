@@ -9,6 +9,7 @@ import { ErrorService } from './error.service';
 import { ErrorBag } from '../models/errors/error-bag';
 import { Utilities } from '../utilities/utilities';
 import { EditorAlertService } from './editor-alert.service';
+import { WarningsService } from './warnings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class EmployeeService {
     private baseUrl: string,
     private filterService: FilterService,
     private errorService: ErrorService,
-    private alertService: EditorAlertService) { }
+    private alertService: EditorAlertService,
+    private warningsService: WarningsService) { }
 
   createEmployeeLink?: string;
   $employeeList = new Subject<ResourceCollection<Resource<EmployeeViewModel>>>();
@@ -46,6 +48,7 @@ export class EmployeeService {
     this.http.get<Resource<EmployeeViewModel>>(url).subscribe(resource => {
       this.activeEmployee = resource;
       this.$activeEmployee.next(this.activeEmployee);
+      this.warningsService.displayErrors(this.activeEmployee.data.irregularities);
 
       if (callback) {
         callback();
@@ -71,6 +74,7 @@ export class EmployeeService {
       next: result => {
         this.activeEmployee = result;
         this.$activeEmployee.next(this.activeEmployee);
+        this.warningsService.displayErrors(this.activeEmployee.data.irregularities);
         this.fetchEmployees();
         this.alertService.sendAlert("✔️ Employee created successfully!");
       },
@@ -102,6 +106,7 @@ export class EmployeeService {
       next: result => {
         this.activeEmployee = result;
         this.$activeEmployee.next(this.activeEmployee);
+        this.warningsService.displayErrors(this.activeEmployee.data.irregularities);
         this.fetchEmployees();
         this.alertService.sendAlert("✔️ Employee saved successfully!");
       },
@@ -126,11 +131,16 @@ export class EmployeeService {
   }
 
   private sanitiseDates(employee: EmployeeViewModel) {
-    employee.dateJoined = Utilities.DateOnly(employee?.dateJoined);
-    employee.doB = Utilities.DateOnly(employee?.doB);
+    if (employee?.dateJoined) {
+      employee.dateJoined = Utilities.DateOnly(employee.dateJoined);
+    }
 
-    if (employee.dateLeft !== null && (employee?.dateLeft?.length ?? 0) > 0) {
-      employee.dateLeft = Utilities.DateOnly(employee?.dateLeft);
+    if (employee?.doB) {
+      employee.doB = Utilities.DateOnly(employee.doB);
+    }
+
+    if (employee?.dateLeft !== null && (employee?.dateLeft?.length ?? 0) > 0) {
+      employee.dateLeft = Utilities.DateOnly(employee.dateLeft);
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Address } from "./address";
 import { BaseViewModel } from "./base-view-model";
+import { ErrorBag } from "./errors/error-bag";
 import { ShortManagerViewModel } from "./short-manager-view-model";
 
 export interface EmployeeViewModel extends BaseViewModel {
@@ -22,5 +23,6 @@ export interface EmployeeViewModel extends BaseViewModel {
   inactive?: boolean,
   hasManager?: boolean,
   isManager?: boolean,
-  hasIrregularities?: boolean
+  hasIrregularities?: boolean,
+  irregularities?: ErrorBag
 }

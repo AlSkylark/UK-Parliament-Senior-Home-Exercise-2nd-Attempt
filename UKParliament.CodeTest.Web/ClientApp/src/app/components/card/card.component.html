@@ -18,7 +18,10 @@
             </div>
         </div>
     </div>
-    <div class="info-wrapper" [class.editor-open]="editorIsOpen">
+    <div
+        class="info-wrapper"
+        [class.editor-open]="editorIsOpen && !isManagerInEditor"
+    >
         <div class="info">
             <div class="name">
                 {{ employee.data.lastName }},

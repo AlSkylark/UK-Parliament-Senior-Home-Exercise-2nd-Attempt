@@ -1,12 +1,16 @@
 <div class="wrapper">
     @if (showLabel) {
-        <label [ngClass]="{ 'has-errors': !isValid }" for="{{ id }}">{{
-            label
-        }}</label>
+        <label
+            [class.has-errors]="!isValid"
+            [class.has-warnings]="hasWarnings"
+            for="{{ id }}"
+            >{{ label }}
+        </label>
     }
     <input
         class="input"
-        [ngClass]="{ 'has-errors': !isValid }"
+        [class.has-errors]="!isValid"
+        [class.has-warnings]="hasWarnings"
         type="{{ isPassword ? 'password' : 'text' }}"
         [attr.name]="id"
         [attr.aria-label]="showLabel ? null : label"
@@ -21,6 +25,11 @@
     <div class="validation-messages">
         @for (message of validationMessages; track $index) {
             <div class="validation-message">{{ message }}</div>
+        }
+    </div>
+    <div class="warning-messages">
+        @for (message of warningMessages; track $index) {
+            <div class="warning-message">{{ message }}</div>
         }
     </div>
 </div>

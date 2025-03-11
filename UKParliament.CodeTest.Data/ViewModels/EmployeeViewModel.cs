@@ -1,4 +1,5 @@
-﻿using UKParliament.CodeTest.Data.Models;
+﻿using FluentValidation.Results;
+using UKParliament.CodeTest.Data.Models;
 
 namespace UKParliament.CodeTest.Data.ViewModels;
 
@@ -26,4 +27,5 @@ public class EmployeeViewModel : BaseViewModel
     public bool HasManager { get; set; }
     public bool IsManager { get; set; }
     public bool HasIrregularities { get; set; }
+    public ValidationResult? Irregularities { get; set; }
 }

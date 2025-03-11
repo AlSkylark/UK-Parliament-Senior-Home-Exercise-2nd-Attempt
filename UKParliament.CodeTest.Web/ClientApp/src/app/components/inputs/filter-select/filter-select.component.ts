@@ -8,6 +8,9 @@ import { LookupItemsEnum } from 'src/app/models/lookup-items-enum';
 import { ErrorService } from 'src/app/services/error.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
+import { WarningsService } from 'src/app/services/warnings.service';
+import { BaseComponent } from '../base-component.component';
+
 @Component({
   selector: 'app-filter-select',
   standalone: true,
@@ -15,18 +18,12 @@ import { LookupService } from 'src/app/services/lookup.service';
   templateUrl: './filter-select.component.html',
   styleUrl: './filter-select.component.scss'
 })
-export class FilterSelectComponent implements OnInit, OnDestroy {
+export class FilterSelectComponent extends BaseComponent implements OnInit, OnDestroy {
   @Input({ required: true })
   text!: string;
 
   @Input({ required: true })
-  id!: string;
-
-  @Input({ required: true })
   itemToLook!: LookupItemsEnum;
-
-  @Input()
-  isValid = true;
 
   itemList: LookupItem[] = [];
 
@@ -38,21 +35,10 @@ export class FilterSelectComponent implements OnInit, OnDestroy {
 
   loading = false;
 
-  validationErrors: ValidationError[] = [];
-  validationMessages: string[] = [];
-
-  errorSubscription: Subscription;
   lookUpSubscription: Subscription | undefined;
 
-  constructor(protected lookupService: LookupService, private errorService: ErrorService) {
-    this.errorSubscription = this.errorService.$errors.subscribe(errors => {
-      this.validationErrors = errors;
-      this.isValid = !this.validationErrors
-        .some(v => v.propertyName.toLocaleUpperCase() == this.id.toLocaleUpperCase());
-      this.validationMessages = this.validationErrors
-        .filter(v => v.propertyName.toLocaleUpperCase() == this.id.toLocaleUpperCase())
-        .map(v => v.errorMessage);
-    });
+  constructor(protected lookupService: LookupService, protected errorService: ErrorService, private warningService: WarningsService) {
+    super(errorService, warningService);
   }
 
   ngOnInit(): void {
@@ -63,7 +49,6 @@ export class FilterSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.errorSubscription.unsubscribe();
     this.lookUpSubscription?.unsubscribe();
   }
 

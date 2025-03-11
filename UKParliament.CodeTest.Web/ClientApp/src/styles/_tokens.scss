@@ -60,12 +60,22 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
     .has-errors {
         border: 2px solid var(--colour-error-dark);
     }
+
+    &.has-warnings,
+    .has-warnings {
+        border: 2px solid var(--colour-warning-text);
+    }
 }
 
 @mixin error-style-text {
     &.has-errors,
     .has-errors {
         color: var(--colour-error-dark);
+    }
+
+    &.has-warnings,
+    .has-warnings {
+        color: var(--colour-warning-text);
     }
 }
 

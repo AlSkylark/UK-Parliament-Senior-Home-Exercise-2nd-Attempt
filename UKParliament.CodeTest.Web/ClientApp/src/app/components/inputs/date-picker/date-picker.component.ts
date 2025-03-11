@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BaseComponent } from '../base-input.component';
+import { BaseInputComponent } from '../base-input.component';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from 'src/app/services/error.service';
 
@@ -11,7 +11,7 @@ import { ErrorService } from 'src/app/services/error.service';
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.scss'
 })
-export class DatePickerComponent extends BaseComponent<string> {
+export class DatePickerComponent extends BaseInputComponent<string> {
 
   onInput(event: Event): void {
     const target = (event.target as HTMLInputElement);

@@ -14,7 +14,7 @@ public class EmployeeMapper(
 {
     public EmployeeViewModel Map(Employee person)
     {
-        var hasIrregularities = !irregularityValidator.Validate(person).IsValid;
+        var irregularities = irregularityValidator.Validate(person);
         var vm = new EmployeeViewModel
         {
             Id = person.Id,
@@ -37,7 +37,8 @@ public class EmployeeMapper(
             Inactive = person.DateLeft is not null,
             HasManager = person.ManagerId > 0,
             IsManager = person.EmployeeType == EmployeeTypeEnum.Manager,
-            HasIrregularities = hasIrregularities,
+            Irregularities = irregularities,
+            HasIrregularities = !irregularities?.IsValid ?? false,
         };
 
         if (person.Manager is not null)
@@ -96,7 +97,7 @@ public class EmployeeMapper(
             LastName = vm.LastName!,
             DoB = vm.DoB,
             Address = vm.Address ?? new(),
-            Salary = vm.Salary ?? 0,
+            Salary = vm.Salary,
             BankAccount = vm.BankAccount,
             DateJoined = vm.DateJoined ?? DateOnly.FromDateTime(DateTime.Now),
             DateLeft = vm.DateLeft,
