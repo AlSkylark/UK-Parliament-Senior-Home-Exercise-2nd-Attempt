@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BaseComponent } from '../base-input.component';
+import { BaseInputComponent } from '../base-input.component';
 import { CommonModule } from '@angular/common';
-import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-textbox',
@@ -11,7 +10,7 @@ import { ErrorService } from 'src/app/services/error.service';
   templateUrl: './textbox.component.html',
   styleUrl: './textbox.component.scss'
 })
-export class TextboxComponent extends BaseComponent<string> {
+export class TextboxComponent extends BaseInputComponent<string> {
 
   @Input()
   isPassword = false;

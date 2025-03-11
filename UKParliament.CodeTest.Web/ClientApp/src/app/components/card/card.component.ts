@@ -22,6 +22,9 @@ export class CardComponent implements OnDestroy {
   @Input()
   selected = false;
 
+  @Input()
+  isManagerInEditor = false;
+
   isDarkMode = false;
   editorIsOpen = false;
 

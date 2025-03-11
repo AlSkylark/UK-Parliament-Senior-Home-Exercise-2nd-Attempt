@@ -75,7 +75,20 @@ a {
             margin-top: 10px;
         }
         &::before {
-            content: "* ";
+            content: "❌ ";
+        }
+    }
+}
+
+.warning-messages {
+    color: var(--colour-warning-text);
+
+    .warning-message {
+        &:first-child {
+            margin-top: 10px;
+        }
+        &::before {
+            content: "ℹ️ ";
         }
     }
 }

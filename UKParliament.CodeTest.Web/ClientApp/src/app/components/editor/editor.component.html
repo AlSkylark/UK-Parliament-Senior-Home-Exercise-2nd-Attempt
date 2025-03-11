@@ -110,12 +110,12 @@
 
             <app-form-section title="Address">
                 <app-textbox
-                    [id]="'address1'"
+                    [id]="'address.address1'"
                     label="Address"
                     [(value)]="selectedEmployee.data.address.address1"
                 ></app-textbox>
                 <app-textbox
-                    [id]="'address2'"
+                    [id]="'address.address2'"
                     label="Address"
                     [showLabel]="false"
                     [(value)]="selectedEmployee.data.address.address2"
@@ -124,13 +124,13 @@
                 <div class="postcode-combi">
                     <app-textbox
                         class="postcode-el"
-                        [id]="'postcode'"
+                        [id]="'address.postcode'"
                         label="Postcode"
                         [(value)]="selectedEmployee.data.address.postcode"
                     ></app-textbox>
                     <app-textbox
                         class="county-el"
-                        [id]="'county'"
+                        [id]="'address.county'"
                         label="County"
                         [(value)]="selectedEmployee.data.address.county"
                     ></app-textbox>
@@ -191,7 +191,7 @@
                 </div>
 
                 <app-textbox
-                    id="bank account"
+                    id="bankaccount"
                     label="Bank-account"
                     [(value)]="selectedEmployee.data.bankAccount"
                 ></app-textbox>
@@ -199,7 +199,10 @@
                 @if (manager) {
                     <div class="manager">
                         <span tabindex="0">Managed by</span>
-                        <app-card [employee]="manager"></app-card>
+                        <app-card
+                            [employee]="manager"
+                            [isManagerInEditor]="true"
+                        ></app-card>
                     </div>
                 }
             </app-form-section>

@@ -3,12 +3,16 @@
         <i class="bx bx-loader-circle bx-spin spinner"></i>
     }
     @if (showLabel) {
-        <label [ngClass]="{ 'has-errors': !isValid }" for="{{ id }}">{{
-            label
-        }}</label>
+        <label
+            [class.has-errors]="!isValid"
+            [class.has-warnings]="hasWarnings"
+            for="{{ id }}"
+            >{{ label }}
+        </label>
     }
     <select
-        [ngClass]="{ 'has-errors': !isValid }"
+        [class.has-errors]="!isValid"
+        [class.has-warnings]="hasWarnings"
         name="{{ id }}"
         id="{{ id }}"
         [attr.aria-label]="text"
@@ -28,6 +32,11 @@
     <div class="validation-messages">
         @for (message of validationMessages; track $index) {
             <div class="validation-message">{{ message }}</div>
+        }
+    </div>
+    <div class="warning-messages">
+        @for (message of warningMessages; track $index) {
+            <div class="warning-message">{{ message }}</div>
         }
     </div>
 </div>

@@ -12,7 +12,7 @@ export class ErrorService {
   errors: ValidationError[] = [];
   $errors = new Subject<ValidationError[]>();
 
-  public displayErrors(errorBag: ErrorBag | null) {
+  public displayErrors(errorBag: ErrorBag | null | undefined) {
     if (errorBag) {
       this.errors = errorBag.errors;
       this.$errors.next(errorBag.errors);

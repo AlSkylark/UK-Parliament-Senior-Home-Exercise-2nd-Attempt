@@ -1,10 +1,17 @@
 <div class="wrapper">
     @if (showLabel) {
-        <label for="{{ id }}">{{ label }}</label>
+        <label
+            [class.has-errors]="!isValid"
+            [class.has-warnings]="hasWarnings"
+            for="{{ id }}"
+            >{{ label }}</label
+        >
     }
     <input
         class="input"
         type="date"
+        [class.has-errors]="!isValid"
+        [class.has-warnings]="hasWarnings"
         [attr.name]="id"
         [attr.aria-label]="showLabel ? null : label"
         id="{{ id }}"
@@ -14,12 +21,16 @@
         [placeholder]="placeholder"
         [autocomplete]="autopopulate.length > 0 ? autopopulate : 'off'"
         [disabled]="disabled"
-        [ngClass]="{ 'has-errors': !isValid }"
     />
 
     <div class="validation-messages">
         @for (message of validationMessages; track $index) {
             <div class="validation-message">{{ message }}</div>
+        }
+    </div>
+    <div class="warning-messages">
+        @for (message of warningMessages; track $index) {
+            <div class="warning-message">{{ message }}</div>
         }
     </div>
 </div>
