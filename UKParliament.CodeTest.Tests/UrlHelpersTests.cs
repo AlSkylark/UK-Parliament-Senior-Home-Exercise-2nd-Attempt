@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using UKParliament.CodeTest.Services.Helpers;
+﻿using UKParliament.CodeTest.Services.Helpers;
 using Xunit;
 
 namespace UKParliament.CodeTest.Tests;
@@ -25,8 +24,8 @@ public class UrlHelpersTests
 
         Assert.Multiple(() =>
         {
-            nothing.Should().Be("http://test.com/");
-            httpNoTrail.Should().Be("https://test/");
+            Assert.Equal("http://test.com/", nothing);
+            Assert.Equal("https://test/", httpNoTrail);
         });
     }
 
@@ -36,7 +35,7 @@ public class UrlHelpersTests
         var baseUrl = "https://test.com/";
         var result = UrlHelpers.Generate(baseUrl);
 
-        result.Should().Be($"{baseUrl}");
+        Assert.Equal($"{baseUrl}", result);
     }
 
     [Fact]
@@ -45,7 +44,7 @@ public class UrlHelpersTests
         var baseUrl = "https://test.com";
         var result = UrlHelpers.Generate(baseUrl);
 
-        result.Should().Be($"{baseUrl}/");
+        Assert.Equal($"{baseUrl}/", result);
     }
 
     [Fact]
@@ -55,10 +54,11 @@ public class UrlHelpersTests
         var query = GenerateQueries(1);
         var result = UrlHelpers.Generate(baseUrl, query, null);
 
-        result
-            .Should()
-            .Be($"{baseUrl}{query.Aggregate("?", QueryAggregator)
-            .TrimEnd('&')}");
+        Assert.Equal(
+            $"{baseUrl}{query.Aggregate("?", QueryAggregator)
+            .TrimEnd('&')}",
+            result
+        );
     }
 
     [Theory]
@@ -74,7 +74,7 @@ public class UrlHelpersTests
 
         var expected = $"{baseUrl}/" + (twoPaths ? "user/form" : "user");
 
-        result.Should().Be($"{expected}");
+        Assert.Equal($"{expected}", result);
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class UrlHelpersTests
         var expected =
             $"{baseUrl}/" + "user/form" + query.Aggregate("?", QueryAggregator).TrimEnd('&');
 
-        result.Should().Be($"{expected}");
+        Assert.Equal($"{expected}", result);
     }
 
     [Theory]
@@ -106,7 +106,7 @@ public class UrlHelpersTests
         var expected =
             $"{baseUrl}/" + "user/form" + query.Aggregate("?", QueryAggregator).TrimEnd('&');
 
-        result.Should().Be($"{expected}");
+        Assert.Equal($"{expected}", result);
     }
 
     private static readonly Func<string, KeyValuePair<string, object?>, string> QueryAggregator = (
