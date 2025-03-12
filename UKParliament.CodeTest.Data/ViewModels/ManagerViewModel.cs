@@ -1,6 +1,8 @@
-﻿namespace UKParliament.CodeTest.Data.ViewModels;
+﻿using UKParliament.CodeTest.Data.HATEOAS;
+
+namespace UKParliament.CodeTest.Data.ViewModels;
 
 public class ManagerViewModel : EmployeeViewModel
 {
-    public IEnumerable<EmployeeViewModel> Employees { get; set; } = [];
+    public IEnumerable<Resource<EmployeeViewModel>> Employees { get; set; } = [];
 }

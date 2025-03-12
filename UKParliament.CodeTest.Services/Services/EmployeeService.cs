@@ -1,6 +1,5 @@
 ﻿using UKParliament.CodeTest.Data.HATEOAS;
 using UKParliament.CodeTest.Data.HATEOAS.Interfaces;
-using UKParliament.CodeTest.Data.Models;
 using UKParliament.CodeTest.Data.Repositories.Interfaces;
 using UKParliament.CodeTest.Data.Requests;
 using UKParliament.CodeTest.Data.ViewModels;
@@ -55,7 +54,7 @@ public class EmployeeService(
     public async Task<EmployeeViewModel?> Update(EmployeeViewModel model)
     {
         var existing = await repo.GetById(model.Id ?? 0);
-        if (existing is null || existing.EmployeeType != EmployeeTypeEnum.Employee)
+        if (existing is null)
         {
             return null;
         }

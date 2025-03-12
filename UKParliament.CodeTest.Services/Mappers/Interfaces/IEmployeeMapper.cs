@@ -3,10 +3,7 @@ using UKParliament.CodeTest.Data.ViewModels;
 
 namespace UKParliament.CodeTest.Services.Mappers.Interfaces;
 
-public interface IEmployeeMapper
+public interface IEmployeeMapper : IBasePersonMapper<EmployeeViewModel, Employee>
 {
-    EmployeeViewModel Map(Employee person);
-    Employee MapForSave(EmployeeViewModel vm, Employee existing);
     Employee MapForCreate(EmployeeViewModel vm);
-    ShortManagerViewModel MapManager(Employee manager);
 }

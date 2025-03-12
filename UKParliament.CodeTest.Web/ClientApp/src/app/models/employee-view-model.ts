@@ -16,6 +16,7 @@ export interface EmployeeViewModel extends BaseViewModel {
   dateJoined?: string,
   dateLeft?: string,
 
+  managerId?: number | null,
   manager: ShortManagerViewModel,
 
   address: Address,

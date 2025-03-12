@@ -34,7 +34,7 @@ public class EmployeeResourceService(IOptions<ApiConfiguration> config)
                     UrlHelpers.Generate(
                         _config.BaseUrl,
                         _config.ApiPrefix,
-                        path,
+                        "managers",
                         $"{data.ManagerId}"
                     ),
                     "GET"

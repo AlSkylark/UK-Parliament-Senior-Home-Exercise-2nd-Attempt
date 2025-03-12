@@ -5,4 +5,5 @@ public enum LookupItemsEnum
     Department,
     PayBand,
     EmployeeType,
+    Manager,
 }

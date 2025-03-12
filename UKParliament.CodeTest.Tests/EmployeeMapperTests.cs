@@ -1,5 +1,4 @@
 ﻿using FakeItEasy;
-using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using UKParliament.CodeTest.Data.Models;
@@ -27,9 +26,9 @@ public class EmployeeMapperTests
 
         Assert.Multiple(() =>
         {
-            result.Should().NotBeNull();
-            result.FirstName.Should().Be("Alex");
-            result.LastName.Should().Be("Castro");
+            Assert.NotNull(result);
+            Assert.Equal("Alex", result.FirstName);
+            Assert.Equal("Castro", result.LastName);
         });
     }
 }

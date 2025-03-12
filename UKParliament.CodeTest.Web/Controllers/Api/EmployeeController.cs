@@ -30,7 +30,7 @@ public class EmployeeController(
         {
             Pagination = results.Pagination,
             Results = results.Results.Select(d =>
-                resourceService.GenerateResource(d, GetControllerName())
+                resourceService.GenerateResource(d, d.IsManager ? "managers" : GetControllerName())
             ),
         };
         var resource = resourceService.GenerateCollectionResource(collection, GetControllerName());

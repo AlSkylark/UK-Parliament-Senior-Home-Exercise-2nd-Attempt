@@ -1,5 +1,4 @@
 ﻿using FakeItEasy;
-using FluentAssertions;
 using Microsoft.Extensions.Options;
 using MockQueryable;
 using UKParliament.CodeTest.Data;
@@ -37,14 +36,14 @@ public class PaginatorTests
         const string expectedUrl = "https://test.com/api";
         Assert.Multiple(() =>
         {
-            result.Should().NotBeNull();
-            result.CurrentPage.Should().Be(page);
-            result.FinalPage.Should().Be(5);
-            result.PerPage.Should().Be(limit);
-            result.Total.Should().Be(50);
-            result.From.Should().Be(21);
-            result.To.Should().Be(30);
-            result.Path.Should().Be(expectedUrl);
+            Assert.NotNull(result);
+            Assert.Equal(page, result.CurrentPage);
+            Assert.Equal(5, result.FinalPage);
+            Assert.Equal(limit, result.PerPage);
+            Assert.Equal(50, result.Total);
+            Assert.Equal(21, result.From);
+            Assert.Equal(30, result.To);
+            Assert.Equal(expectedUrl, result.Path);
         });
     }
 
@@ -61,10 +60,10 @@ public class PaginatorTests
         const string expectedUrl = "https://test.com/api";
         Assert.Multiple(() =>
         {
-            result.FirstPageUrl.Should().Be($"{expectedUrl}?limit=1&page=1");
-            result.FinalPageUrl.Should().Be($"{expectedUrl}?limit=1&page=5");
-            result.NextPageUrl.Should().Be($"{expectedUrl}?limit=1&page=4");
-            result.PrevPageUrl.Should().Be($"{expectedUrl}?limit=1&page=2");
+            Assert.Equal($"{expectedUrl}?limit=1&page=1", result.FirstPageUrl);
+            Assert.Equal($"{expectedUrl}?limit=1&page=5", result.FinalPageUrl);
+            Assert.Equal($"{expectedUrl}?limit=1&page=4", result.NextPageUrl);
+            Assert.Equal($"{expectedUrl}?limit=1&page=2", result.PrevPageUrl);
         });
     }
 
@@ -81,13 +80,13 @@ public class PaginatorTests
         const string expectedUrl = "https://test.com/api";
         Assert.Multiple(() =>
         {
-            result.CurrentPage.Should().Be(66);
-            result.From.Should().Be(0);
-            result.To.Should().Be(0);
-            result.FirstPageUrl.Should().Be($"{expectedUrl}?limit=1&page=1");
-            result.FinalPageUrl.Should().Be($"{expectedUrl}?limit=1&page=5");
-            result.NextPageUrl.Should().Be(null);
-            result.PrevPageUrl.Should().Be(null);
+            Assert.Equal(66, result.CurrentPage);
+            Assert.Equal(0, result.From);
+            Assert.Equal(0, result.To);
+            Assert.Equal($"{expectedUrl}?limit=1&page=1", result.FirstPageUrl);
+            Assert.Equal($"{expectedUrl}?limit=1&page=5", result.FinalPageUrl);
+            Assert.Null(result.NextPageUrl);
+            Assert.Null(result.PrevPageUrl);
         });
     }
 
@@ -103,8 +102,8 @@ public class PaginatorTests
 
         Assert.Multiple(() =>
         {
-            result.PerPage.Should().Be(_options.Value.DefaultLimit);
-            result.Total.Should().Be(50);
+            Assert.Equal(_options.Value.DefaultLimit, result.PerPage);
+            Assert.Equal(50, result.Total);
         });
     }
 
@@ -122,8 +121,8 @@ public class PaginatorTests
 
         Assert.Multiple(() =>
         {
-            result.CurrentPage.Should().Be(1);
-            result.Total.Should().Be(50);
+            Assert.Equal(1, result.CurrentPage);
+            Assert.Equal(50, result.Total);
         });
     }
 
@@ -141,9 +140,9 @@ public class PaginatorTests
 
         Assert.Multiple(() =>
         {
-            result.Should().HaveCount(10);
-            result[0].Should().Be(firstResult);
-            result[9].Should().Be(secondResult);
+            Assert.Equal(10, result.Count);
+            Assert.Equal(firstResult, result[0]);
+            Assert.Equal(secondResult, result[9]);
         });
     }
 
@@ -157,6 +156,6 @@ public class PaginatorTests
 
         var result = _paginator.Paginate(list, request).ToList();
 
-        result.Should().HaveCount(0);
+        Assert.Empty(result);
     }
 }

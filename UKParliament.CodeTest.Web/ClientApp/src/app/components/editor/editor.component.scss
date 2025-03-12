@@ -113,6 +113,29 @@ $field-gaps: 1rem;
             }
         }
 
+        .manager {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            .remove-manager {
+                justify-self: end;
+            }
+        }
+
+        .employee-toggle {
+            display: flex;
+            flex-direction: column;
+
+            gap: $field-gaps;
+
+            .employee-list {
+                display: flex;
+                flex-direction: column;
+                max-height: 400px;
+                overflow-y: scroll;
+            }
+        }
+
         .bottom-section {
             margin-top: $field-gaps;
             align-self: center;

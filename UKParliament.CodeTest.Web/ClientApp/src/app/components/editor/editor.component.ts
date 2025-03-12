@@ -16,6 +16,7 @@ import { ErrorService } from 'src/app/services/error.service';
 import { Subscription } from 'rxjs';
 import { EditorService } from 'src/app/services/editor.service';
 import { EditorAlertComponent } from "../editor-alert/editor-alert.component";
+import { ManagerViewModel } from 'src/app/models/manager-view-model';
 
 @Component({
   selector: 'app-editor',
@@ -25,11 +26,11 @@ import { EditorAlertComponent } from "../editor-alert/editor-alert.component";
   styleUrl: './editor.component.scss'
 })
 export class EditorComponent implements OnDestroy {
-  initialSelectedEmployee!: Resource<EmployeeViewModel>;
-  selectedEmployee!: Resource<EmployeeViewModel>;
 
+  initialSelectedEmployee!: Resource<EmployeeViewModel | ManagerViewModel>;
+  selectedEmployee!: Resource<EmployeeViewModel | ManagerViewModel>;
 
-  manager: Resource<EmployeeViewModel> | null = null;
+  manager: Resource<ManagerViewModel> | null = null;
 
   nonReactiveName?: string | null = null;
   link?: Link | null = null;
@@ -38,11 +39,12 @@ export class EditorComponent implements OnDestroy {
   hasChanges = false;
 
   createModeEnabled = false;
+  showEmployees = false;
 
   employeeSubscription: Subscription;
   errorsSubscription: Subscription;
 
-  @HostListener("input")
+  @HostListener("input", ["$event"])
   onChanges() {
     if (this.hasChanges) return;
     this.hasChanges = this.initialSelectedEmployee !== this.selectedEmployee;
@@ -81,6 +83,11 @@ export class EditorComponent implements OnDestroy {
     this.errorsSubscription.unsubscribe();
   }
 
+  toggleEmployees() {
+    console.log(this.showEmployees);
+    this.showEmployees = !this.showEmployees;
+  }
+
   setNewEmployee() {
     const newEmployee: Resource<EmployeeViewModel> = {
       data: {
@@ -114,6 +121,11 @@ export class EditorComponent implements OnDestroy {
 
   loadManager() {
     if (!this.selectedEmployee) {
+      return;
+    }
+
+    if (this.selectedEmployee.data.isManager) {
+      this.manager = this.selectedEmployee as Resource<ManagerViewModel>;
       return;
     }
 
@@ -170,6 +182,10 @@ export class EditorComponent implements OnDestroy {
   closeEditor() {
     this.editorService.closeEditor();
     this.employeeService.unsetEmployee();
+  }
+
+  removeManager() {
+    this.selectedEmployee.data.managerId = null;
   }
 
   public get lookupItems(): typeof LookupItemsEnum {

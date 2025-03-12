@@ -21,7 +21,9 @@
         </button>
         @if (isOpen) {
             <div class="dropdown-contents">
-                <button class="dropdown-button">Admin panel</button>
+                <button class="dropdown-button" (click)="sendAlert()">
+                    Admin panel
+                </button>
 
                 <button class="dropdown-button" (click)="signOut()">
                     Sign out

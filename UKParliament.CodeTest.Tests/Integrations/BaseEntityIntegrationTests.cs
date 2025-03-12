@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using FluentAssertions.Extensions;
-using UKParliament.CodeTest.Data;
+﻿using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Data.Models;
 using Xunit;
 
@@ -29,7 +27,11 @@ public class BaseEntityIntegrationTests
 
         var result = _db.Departments.Where(d => d.Name == name).First();
 
-        result.CreatedAt.Should().BeWithin(100.Milliseconds()).After(firstStamp);
+        Assert.InRange(
+            result.CreatedAt,
+            firstStamp.AddMilliseconds(-100),
+            firstStamp.AddMilliseconds(100)
+        );
     }
 
     [Fact]
@@ -51,8 +53,8 @@ public class BaseEntityIntegrationTests
 
         Assert.Multiple(() =>
         {
-            result.UpdatedAt.Should().NotBe(updatedDate);
-            result.UpdatedAt.Should().BeAfter(updatedDate);
+            Assert.NotEqual(result.UpdatedAt, updatedDate);
+            Assert.True(result.UpdatedAt > updatedDate);
         });
     }
 }

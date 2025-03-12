@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using UKParliament.CodeTest.Data;
+﻿using UKParliament.CodeTest.Data;
 using Xunit;
 
 namespace UKParliament.CodeTest.Tests.Integrations;
@@ -20,7 +19,7 @@ public class DatabaseSeederIntegrationTests
     {
         var results = _db.Departments.ToList();
 
-        results.Should().HaveCount(4);
+        Assert.Equal(4, results.Count);
     }
 
     [Fact]
@@ -28,7 +27,7 @@ public class DatabaseSeederIntegrationTests
     {
         var results = _db.PayBands.ToList();
 
-        results.Should().HaveCount(6);
+        Assert.Equal(6, results.Count);
     }
 
     [Fact]
@@ -37,7 +36,7 @@ public class DatabaseSeederIntegrationTests
         var results = _db.Managers.ToList();
         var employeeCount = results.Select(m => m.Employees.Count()).Aggregate(0, (s, n) => s += n);
 
-        results.Should().HaveCount(5);
-        employeeCount.Should().Be(50);
+        Assert.Equal(5, results.Count);
+        Assert.Equal(50, employeeCount);
     }
 }

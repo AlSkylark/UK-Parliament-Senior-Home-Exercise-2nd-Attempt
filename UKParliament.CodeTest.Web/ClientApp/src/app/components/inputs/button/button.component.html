@@ -1,11 +1,8 @@
 <button
-  type="{{ type }}"
-  class="button"
-  [disabled]="disabled"
-  (keydown.enter)="activateButton()"
-  (click)="activateButton()"
-  (keydown.space)="activateButton()"
-  [ariaLabel]="ariaLabel"
+    type="{{ type }}"
+    class="button"
+    [disabled]="disabled"
+    [ariaLabel]="ariaLabel"
 >
-  <ng-content />
+    <ng-content />
 </button>

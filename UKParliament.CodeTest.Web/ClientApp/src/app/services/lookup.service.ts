@@ -21,10 +21,12 @@ export class LookupService {
   private payBands: LookupItem[] = [];
   private departments: LookupItem[] = [];
   private employeeTypes: LookupItem[] = [];
+  private managers: LookupItem[] = [];
 
   payBandsSubject = new Subject<LookupItem[]>();
   departmentsSubject = new Subject<LookupItem[]>();
   employeeTypesSubject = new Subject<LookupItem[]>();
+  managersSubject = new Subject<LookupItem[]>();
 
   public lookUpItem(item: LookupItemsEnum) {
     switch (item) {
@@ -36,6 +38,9 @@ export class LookupService {
 
       case LookupItemsEnum.PayBand:
         return this.payBandsSubject;
+
+      case LookupItemsEnum.Manager:
+        return this.managersSubject;
     }
   }
 
@@ -55,6 +60,11 @@ export class LookupService {
         this.payBands = newItems;
         this.payBandsSubject.next(this.payBands);
         break;
+
+      case LookupItemsEnum.Manager:
+        this.managers = newItems;
+        this.managersSubject.next(this.managers);
+        break;
     }
   }
 
@@ -68,6 +78,9 @@ export class LookupService {
 
       case LookupItemsEnum.PayBand:
         return this.payBands;
+
+      case LookupItemsEnum.Manager:
+        return this.managers;
     }
   }
 

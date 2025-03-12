@@ -10,6 +10,7 @@ namespace UKParliament.CodeTest.Services.Services;
 public class LookUpService(
     ILookupRepository<Department> departmentRepo,
     ILookupRepository<PayBand> payBandRepo,
+    IEmployeeRepository employeeRepo,
     ILookupMapper mapper
 ) : ILookUpService
 {
@@ -50,6 +51,10 @@ public class LookUpService(
                 .GetNameValues(typeof(EmployeeTypeEnum))
                 .Select(mapper.MapFromString)
                 .OrderBy(i => i.Name),
+            LookupItemsEnum.Manager => employeeRepo
+                .Search()
+                .Where(e => e.EmployeeType == EmployeeTypeEnum.Manager)
+                .Select(mapper.MapFromEmployee),
             null => [],
             _ => [],
         };

@@ -1,6 +1,6 @@
 @use "sass:color";
 .theme[data-theme="light"] {
-    --colour-white: white;
+    --colour-white: rgb(247, 247, 247);
 
     --colour-purple: #373151;
     --colour-purple-darker: #2c2843;
@@ -17,7 +17,7 @@
 
     --colour-warning-light: #fffbea;
     --colour-warning-dark: #fff1b9;
-    --colour-warning-text: #af921c;
+    --colour-warning-text: #6e500f;
 
     --colour-manager-light: #d9edff;
     --colour-manager-dark: #b7d8f5;
@@ -34,10 +34,10 @@
 
     --colour-purple: #9188bb;
     --colour-purple-darker: #cdc8ee;
-    --colour-purple-lighter: #5a5480;
+    --colour-purple-lighter: #a6a0ce;
 
-    --colour-grey-1: #f8f7f7;
-    --colour-grey-2: #717171;
+    --colour-grey-1: #8b8b8b;
+    --colour-grey-2: #a0a0a0;
     --colour-grey-3: #4d4d4d;
 
     --colour-black: white;

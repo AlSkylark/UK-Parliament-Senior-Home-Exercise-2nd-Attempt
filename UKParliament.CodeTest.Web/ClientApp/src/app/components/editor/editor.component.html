@@ -32,6 +32,9 @@
                         <app-button
                             type="button"
                             (click)="reactivateEmployee()"
+                            [disabled]="
+                                selectedEmployee.data.isManager ?? false
+                            "
                         >
                             <i class="bx bxs-user-check"></i>
                             Mark as active
@@ -40,13 +43,20 @@
                         <app-button
                             type="button"
                             (click)="deactivateEmployee()"
+                            [disabled]="
+                                selectedEmployee.data.isManager ?? false
+                            "
                         >
                             <i class="bx bxs-user-x"></i>
                             Mark as inactive
                         </app-button>
                     }
 
-                    <app-button type="button" (click)="deleteEmployee()">
+                    <app-button
+                        type="button"
+                        (click)="deleteEmployee()"
+                        [disabled]="selectedEmployee.data.isManager ?? false"
+                    >
                         <i class="bx bxs-user-minus"></i>
                         Delete
                     </app-button>
@@ -191,21 +201,72 @@
                 </div>
 
                 <app-textbox
-                    id="bankaccount"
+                    [id]="'bankaccount'"
                     label="Bank-account"
                     [(value)]="selectedEmployee.data.bankAccount"
                 ></app-textbox>
 
-                @if (manager) {
-                    <div class="manager">
-                        <span tabindex="0">Managed by</span>
-                        <app-card
-                            [employee]="manager"
-                            [isManagerInEditor]="true"
-                        ></app-card>
-                    </div>
-                }
+                <div class="manager">
+                    @if (!selectedEmployee.data.isManager) {
+                        @if (selectedEmployee.data.managerId && manager) {
+                            <span tabindex="0">Managed by</span>
+                            <app-card
+                                [employee]="manager"
+                                [isManagerInEditor]="true"
+                            ></app-card>
+
+                            <app-button
+                                type="button"
+                                class="remove-manager"
+                                (click)="removeManager()"
+                            >
+                                <i class="bx bx-user-x"></i>
+                                Unassign manager
+                            </app-button>
+                        } @else {
+                            <app-dropdown
+                                class="managerId"
+                                label="Assign manager"
+                                text="Manager"
+                                [id]="'managerId'"
+                                [itemToLook]="lookupItems.Manager"
+                                [(value)]="selectedEmployee.data.managerId"
+                            >
+                            </app-dropdown>
+                        }
+                    }
+                </div>
             </app-form-section>
+
+            @if (selectedEmployee.data.isManager) {
+                <hr />
+                <app-form-section title="Managerial Details">
+                    <div class="employee-toggle">
+                        <app-button
+                            type="button"
+                            class="show-employees"
+                            (click)="toggleEmployees()"
+                        >
+                            <i class="bx bxs-group"></i>
+                            {{ showEmployees ? "Hide " : "Show " }} managed
+                            employees
+                        </app-button>
+                        @if (showEmployees) {
+                            <div class="employee-list">
+                                @for (
+                                    employee of manager?.data?.employees;
+                                    track $index
+                                ) {
+                                    <app-card
+                                        [employee]="employee"
+                                        [isManagerInEditor]="true"
+                                    ></app-card>
+                                }
+                            </div>
+                        }
+                    </div>
+                </app-form-section>
+            }
 
             <div class="bottom-section">
                 <div class="submit">

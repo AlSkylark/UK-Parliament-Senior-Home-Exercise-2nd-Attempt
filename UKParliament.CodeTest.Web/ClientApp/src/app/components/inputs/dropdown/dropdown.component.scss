@@ -4,6 +4,11 @@
     height: 100%;
     position: relative;
 
+    label {
+        color: var(--colour-black);
+        @include t.error-style-text;
+    }
+
     select {
         height: 100%;
         width: 100%;

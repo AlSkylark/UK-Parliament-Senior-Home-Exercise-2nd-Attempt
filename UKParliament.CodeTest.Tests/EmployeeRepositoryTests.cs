@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using UKParliament.CodeTest.Data;
+﻿using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Data.Repositories;
 using UKParliament.CodeTest.Tests.Integrations;
 using Xunit;
@@ -26,8 +25,8 @@ public class EmployeeRepositoryTests
 
         Assert.Multiple(() =>
         {
-            result.Should().NotBeNull();
-            result!.Id.Should().Be(1);
+            Assert.NotNull(result);
+            Assert.Equal(1, result!.Id);
         });
     }
 
@@ -45,10 +44,10 @@ public class EmployeeRepositoryTests
 
         Assert.Multiple(() =>
         {
-            result.Should().NotBeNull();
-            result!.Id.Should().Be(1);
-            result.FirstName.Should().Be("Test");
-            result.LastName.Should().Be("Erino");
+            Assert.NotNull(result);
+            Assert.Equal(1, result!.Id);
+            Assert.Equal("Test", result.FirstName);
+            Assert.Equal("Erino", result.LastName);
         });
     }
 }
