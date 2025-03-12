@@ -63,7 +63,7 @@ irregular (has no manager, pay, etc.)
 
         &:has(.status.irregular) {
             a {
-                color: var(--colour-purple-lighter);
+                color: var(--colour-white);
             }
             .info {
                 .name {
@@ -115,7 +115,7 @@ irregular (has no manager, pay, etc.)
         z-index: 2;
         display: grid;
         grid-template-columns: 1fr auto;
-        gap: 5px;
+        gap: 10px;
 
         @include media-breakpoint-down(sm) {
             grid-template-columns: 1fr;

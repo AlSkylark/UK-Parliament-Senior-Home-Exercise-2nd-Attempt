@@ -10,6 +10,7 @@ import { ErrorBag } from '../models/errors/error-bag';
 import { Utilities } from '../utilities/utilities';
 import { EditorAlertService } from './editor-alert.service';
 import { WarningsService } from './warnings.service';
+import { ManagerViewModel } from '../models/manager-view-model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,11 +42,11 @@ export class EmployeeService {
   }
 
   public requestManager(url: string) {
-    return this.http.get<Resource<EmployeeViewModel>>(url);
+    return this.http.get<Resource<ManagerViewModel>>(url);
   }
 
   public selectEmployee(url: string, callback: Function | null = null) {
-    this.http.get<Resource<EmployeeViewModel>>(url).subscribe(resource => {
+    this.http.get<Resource<EmployeeViewModel | ManagerViewModel>>(url).subscribe(resource => {
       this.activeEmployee = resource;
       this.$activeEmployee.next(this.activeEmployee);
       this.warningsService.displayErrors(this.activeEmployee.data.irregularities);

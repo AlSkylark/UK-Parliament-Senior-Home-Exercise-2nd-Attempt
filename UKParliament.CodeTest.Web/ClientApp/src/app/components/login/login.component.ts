@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { TextboxComponent } from "../inputs/textbox/textbox.component";
 import { ButtonComponent } from "../inputs/button/button.component";
 import { UserService } from 'src/app/services/user.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { ErrorBag } from 'src/app/models/errors/error-bag';
+import { ThemeService } from 'src/app/services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +14,20 @@ import { ErrorBag } from 'src/app/models/errors/error-bag';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
   username = "";
 
-  constructor(private userService: UserService, private errorService: ErrorService) { }
+  isDarkMode = false;
+
+  themeSubscription: Subscription;
+  constructor(private userService: UserService, private errorService: ErrorService, private themeService: ThemeService) {
+    this.themeSubscription = this.themeService.$theme.subscribe(t => this.isDarkMode = t === "dark");
+  }
+
+  ngOnDestroy(): void {
+    this.themeSubscription.unsubscribe();
+  }
 
   logIn(e: Event) {
     e.preventDefault();
@@ -29,5 +40,9 @@ export class LoginComponent {
     }
 
     this.userService.signIn(this.username);
+  }
+
+  toggleTheme() {
+    this.themeService.changeTheme();
   }
 }

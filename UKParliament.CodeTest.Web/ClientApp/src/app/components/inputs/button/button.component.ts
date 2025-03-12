@@ -15,15 +15,5 @@ export class ButtonComponent {
   disabled = false;
 
   @Input()
-  clickFunction?: Function;
-
-  @Input()
   ariaLabel = "";
-
-  @Output()
-  click = new EventEmitter<void>();
-
-  activateButton() {
-    this.click.next()
-  }
 }

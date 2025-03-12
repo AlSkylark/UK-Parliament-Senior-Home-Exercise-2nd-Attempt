@@ -2,7 +2,4 @@
 
 namespace UKParliament.CodeTest.Data.Repositories.Interfaces;
 
-public interface IEmployeeRepository : IBasePersonRepository<Employee>
-{
-    IQueryable<Employee> GetManagerEmployees(int managerId);
-}
+public interface IEmployeeRepository : IBasePersonRepository<Employee> { }

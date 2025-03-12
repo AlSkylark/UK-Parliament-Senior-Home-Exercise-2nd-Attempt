@@ -8,12 +8,13 @@ public class EmployeeIrregularitiesValidator : AbstractValidator<Employee>
     public EmployeeIrregularitiesValidator(IValidator<Address?> addressValidator)
     {
         RuleFor(e => e.DoB).NotNull().WithMessage("A date of birth should be assigned.");
+        RuleFor(e => e.DepartmentId).NotNull().WithMessage("A department should be assigned");
         RuleFor(e => e.BankAccount)
             .NotEmpty()
-            .When(e => e.Salary != 0)
+            .When(e => e.Salary is not null)
             .WithMessage("A bank account should be added if a salary has been assigned.");
         RuleFor(e => e.Salary)
-            .NotEqual(0)
+            .NotNull()
             .When(e => e.BankAccount != null)
             .WithMessage("A salary should be assigned if a bank account has been added.");
         RuleFor(e => e.Address).SetValidator(_ => addressValidator);

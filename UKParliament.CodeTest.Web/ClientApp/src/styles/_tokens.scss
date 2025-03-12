@@ -50,6 +50,13 @@ $decoration-box-shadow: 0 2px 5px 1px rgba(129, 129, 129, 0.63);
 
     @include error-style;
 
+    &:disabled {
+        background-color: var(--colour-grey-2);
+        border-color: var(--colour-grey-1);
+        color: var(--colour-grey-3);
+        cursor: default;
+    }
+
     &:focus {
         @include focus-style;
     }

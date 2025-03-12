@@ -22,10 +22,12 @@
         (change)="updateValue()"
         [disabled]="disabled"
     >
-        <option value="" [selected]="value === null">{{ text }}</option>
+        <option [value]="null">{{ text }}</option>
 
         @for (item of itemList; track $index) {
-            <option [value]="item.name">{{ item.name }}</option>
+            <option [value]="itemToLook === 'Manager' ? item.id : item.name">
+                {{ item.name }}
+            </option>
         }
     </select>
 

@@ -28,10 +28,10 @@ export class FilterSelectComponent extends BaseComponent implements OnInit, OnDe
   itemList: LookupItem[] = [];
 
   @Input()
-  value?: string;
+  value?: any;
 
   @Output()
-  valueChange = new EventEmitter<string | undefined>();
+  valueChange = new EventEmitter<any | undefined>();
 
   loading = false;
 
@@ -52,7 +52,7 @@ export class FilterSelectComponent extends BaseComponent implements OnInit, OnDe
     this.lookUpSubscription?.unsubscribe();
   }
 
-  getLookupItems() {
+  protected getLookupItems() {
     this.loading = this.lookupService.getLookupItems(this.itemToLook);
   }
 
