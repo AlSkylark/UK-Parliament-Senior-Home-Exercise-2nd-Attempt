@@ -1,3 +1,4 @@
+import { EmployeeViewModel } from "../models/employee-view-model";
 import { Utilities } from "./utilities";
 
 describe('Utilities', () => {
@@ -118,4 +119,26 @@ describe('Utilities', () => {
 
         expect(result).toEqual({ name: "Some name", object: { test: "all good" } });
     });
+
+    it("Should clean null strings", () => {
+        const testObject: EmployeeViewModel = {
+            department: "null",
+            payBand: "null",
+            manager: {},
+            address: {},
+            firstName: "Alex"
+        };
+
+        const expected: EmployeeViewModel = {
+            department: "",
+            payBand: "",
+            manager: {},
+            address: {},
+            firstName: "Alex"
+        };
+
+        const result = Utilities.CleanNullString(testObject);
+
+        expect(result).toEqual(expected);
+    })
 });

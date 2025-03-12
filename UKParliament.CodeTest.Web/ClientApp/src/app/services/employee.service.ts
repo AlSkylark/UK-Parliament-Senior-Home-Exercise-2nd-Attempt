@@ -67,7 +67,6 @@ export class EmployeeService {
       return;
     }
 
-
     const toSend = Utilities.CleanEmptyObjects(employee);
     this.sanitiseDates(toSend);
 
@@ -101,6 +100,7 @@ export class EmployeeService {
   }
 
   public updateEmployee(url: string, employee: EmployeeViewModel) {
+    Utilities.CleanNullString(employee);
     this.sanitiseDates(employee);
 
     this.http.put<Resource<EmployeeViewModel>>(url, employee).subscribe({

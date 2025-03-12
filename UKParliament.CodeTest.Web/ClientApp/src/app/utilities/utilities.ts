@@ -1,3 +1,5 @@
+import { EmployeeViewModel } from "../models/employee-view-model";
+
 export class Utilities {
     public static DateOnly(date?: string) {
         if (!date) {
@@ -21,10 +23,20 @@ export class Utilities {
                 continue;
             }
 
-            if (val) {
+            if (val && val !== "null") {
                 clean[entry] = val;
             }
         }
         return clean;
+    }
+
+    public static CleanNullString(employee: EmployeeViewModel) {
+        if (employee.department === "null") {
+            employee.department = ""
+        }
+
+        if (employee.payBand === "null") {
+            employee.payBand = ""
+        }
     }
 }

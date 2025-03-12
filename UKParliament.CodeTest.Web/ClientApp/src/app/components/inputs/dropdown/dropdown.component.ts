@@ -30,7 +30,7 @@ export class DropdownComponent extends FilterSelectComponent implements OnDestro
       this.itemList = item;
       this.loading = false;
     })
-    this.getLookupItems()
+    this.getLookupItems();
   }
 
   ngOnDestroy(): void {
