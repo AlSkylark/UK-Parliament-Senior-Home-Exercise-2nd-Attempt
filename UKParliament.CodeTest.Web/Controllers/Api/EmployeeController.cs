@@ -43,7 +43,7 @@ public class EmployeeController(
         var result = await employeeService.View(id);
         if (result is null)
         {
-            return BadRequest("Employee not found");
+            return NotFound("Employee not found");
         }
 
         var resource = resourceService.GenerateResource(result, GetControllerName());
@@ -85,7 +85,7 @@ public class EmployeeController(
         var result = await employeeService.Update(person);
         if (result is null)
         {
-            return BadRequest("Employee not found");
+            return NotFound("Employee not found");
         }
 
         var resource = resourceService.GenerateResource(result, GetControllerName());
