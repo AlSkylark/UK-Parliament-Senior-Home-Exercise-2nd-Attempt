@@ -96,8 +96,14 @@
                         "tsConfig": "tsconfig.spec.json",
                         "karmaConfig": "karma.conf.js",
                         "assets": ["src/assets"],
-                        "styles": ["src/styles.scss"],
-                        "scripts": []
+                        "styles": [
+                            "node_modules/boxicons/css/boxicons.min.css",
+                            "src/styles.scss"
+                        ],
+                        "scripts": [],
+                        "stylePreprocessorOptions": {
+                            "includePaths": ["src/styles"]
+                        }
                     }
                 },
                 "server": {

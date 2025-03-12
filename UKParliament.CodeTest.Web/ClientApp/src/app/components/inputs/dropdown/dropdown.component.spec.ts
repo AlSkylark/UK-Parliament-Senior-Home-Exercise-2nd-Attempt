@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DropdownComponent } from './dropdown.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('DropdownComponent', () => {
   let component: DropdownComponent;
@@ -8,13 +10,13 @@ describe('DropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DropdownComponent]
+      imports: [DropdownComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), { provide: 'BASE_URL', useValue: 'http://localhost' }]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DropdownComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

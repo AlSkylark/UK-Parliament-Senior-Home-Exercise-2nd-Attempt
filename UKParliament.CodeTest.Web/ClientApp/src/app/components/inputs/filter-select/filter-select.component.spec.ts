@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilterSelectComponent } from './filter-select.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('FilterSelectComponent', () => {
   let component: FilterSelectComponent;
@@ -8,13 +10,13 @@ describe('FilterSelectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FilterSelectComponent]
+      imports: [FilterSelectComponent],
+      providers: [provideHttpClient(), provideHttpClientTesting(), { provide: 'BASE_URL', useValue: 'http://localhost' }]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(FilterSelectComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

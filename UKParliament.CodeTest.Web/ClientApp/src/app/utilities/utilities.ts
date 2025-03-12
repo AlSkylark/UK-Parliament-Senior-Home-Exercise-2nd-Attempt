@@ -16,6 +16,9 @@ export class Utilities {
                 if (Object.keys(recursed).length === 0) {
                     continue;
                 }
+
+                clean[entry] = recursed;
+                continue;
             }
 
             if (val) {

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SkipComponent } from './skip.component';
+import { RouterModule } from '@angular/router';
 
 describe('SkipComponent', () => {
   let component: SkipComponent;
@@ -8,9 +9,9 @@ describe('SkipComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SkipComponent]
+      imports: [SkipComponent, RouterModule.forRoot([])]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SkipComponent);
     component = fixture.componentInstance;
