@@ -137,8 +137,8 @@ describe('Utilities', () => {
             firstName: "Alex"
         };
 
-        const result = Utilities.CleanNullString(testObject);
+        Utilities.CleanNullString(testObject);
 
-        expect(result).toEqual(expected);
+        expect(testObject).toEqual(expected as any);
     })
 });
